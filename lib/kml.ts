@@ -1,10 +1,9 @@
-import { MapProperties } from '../types/';
-import { is } from '@toba/utility';
-import xml from './xml';
+import { MapProperties } from './types';
+import { is, maybeNumber, titleCase } from '@toba/tools';
+import { xml } from './xml';
 //import * as stream from 'stream';
 import { DOMParser as DOM } from 'xmldom';
-import index from './';
-import util from '../util/';
+import { Index } from './index';
 import * as JSZip from 'jszip';
 
 /**
@@ -13,7 +12,7 @@ import * as JSZip from 'jszip';
  *
  *    -113.2924677415256,44.70498119901985,0 -113.2924051073907,44.70509329841001,0 -113.2922923580428,44.70527906358436,0
  */
-function coordinates(node: Element, name: string): number[][][] {
+export function coordinates(node: Element, name: string): number[][][] {
    const lines = node.getElementsByTagName(name);
 
    if (lines != null && lines.length > 0) {
@@ -30,11 +29,11 @@ function coordinates(node: Element, name: string): number[][][] {
                const parts = p.split(',').map(roundFromString(6));
 
                if (parts.length >= 2) {
-                  location[index.LON] = parts[0];
-                  location[index.LAT] = parts[1];
+                  location[Index.Longitude] = parts[0];
+                  location[Index.Latitude] = parts[1];
 
                   if (parts.length >= 3) {
-                     location[index.ELEVATION] = parts[2];
+                     location[Index.Elevation] = parts[2];
                   }
                   locations.push(location);
                }
@@ -58,7 +57,7 @@ const roundFromString = (places: number) => (n: string) =>
  * Return location as `[latitude, longitude, elevation]` or null if the element
  * contains no coordinates.
  */
-function location(node: Element): number[] {
+export function location(node: Element): number[] {
    const locations = coordinates(node, 'Point');
    if (locations != null && locations.length > 0) {
       if (locations.length > 1) {
@@ -74,7 +73,7 @@ function location(node: Element): number[] {
  * Get array of segments (which are arrays of point arrays) or null if the
  * element contains no coordinates.
  */
-function line(node: Element): number[][][] {
+export function line(node: Element): number[][][] {
    const l = coordinates(node, 'LineString');
    return l == null || l.length == 0 ? null : l;
 }
@@ -83,7 +82,7 @@ function line(node: Element): number[][][] {
  * Extract properties from description HTML table. This seems to be standard
  * output format from ESRI systems.
  */
-function parseDescription(properties: MapProperties): MapProperties {
+export function parseDescription(properties: MapProperties): MapProperties {
    if (/<html/.test(properties.description)) {
       // remove CDATA wrapper
       const source = properties.description
@@ -123,7 +122,7 @@ function parseDescription(properties: MapProperties): MapProperties {
          for (let i = 0; i < rows.length; i++) {
             const cols = rows[i].getElementsByTagName('td');
             const key = clean(xml.value(cols[0]));
-            const value = util.number.maybe(clean(xml.value(cols[1])));
+            const value = maybeNumber(clean(xml.value(cols[1])));
 
             if (key && value) {
                properties[key.replace(' ', '_')] = value;
@@ -139,7 +138,7 @@ function parseDescription(properties: MapProperties): MapProperties {
  * Return KML from KMZ file. Returns the first .kml file found in the archive
  * which should be doc.kml.
  */
-function fromKMZ(data: Buffer): Promise<Document> {
+export function fromKMZ(data: Buffer): Promise<Document> {
    return new Promise((resolve, reject) => {
       const zip = new JSZip();
       zip.loadAsync(data).then(archive => {
@@ -163,7 +162,10 @@ function fromKMZ(data: Buffer): Promise<Document> {
 /**
  * Properties of a KML node.
  */
-function properties(node: Element, extras: string[] = []): MapProperties {
+export function properties(
+   node: Element,
+   extras: string[] = []
+): MapProperties {
    const names = extras.concat(['name', 'description']);
    const properties: MapProperties = {};
 
@@ -172,16 +174,14 @@ function properties(node: Element, extras: string[] = []): MapProperties {
       if (!is.empty(value)) {
          switch (key) {
             case 'name':
-               value = util.titleCase(value);
+               value = titleCase(value);
                break;
             //case 'description': value = value.replace(/[\n\r]/g, ' ').replace(/\s{2,}/g, ' '); break;
          }
-         properties[key] = util.number.maybe(value);
+         properties[key] = maybeNumber(value);
       }
    }
    delete properties['description'];
 
    return parseDescription(properties);
 }
-
-export default { properties, location, line, fromKMZ, parseDescription };

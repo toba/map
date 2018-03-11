@@ -1,5 +1,5 @@
 import { DOMParser as DOM } from 'xmldom';
-import xml from './xml';
+import { xml } from './xml';
 
 const doc = new DOM().parseFromString(
    '<trkpt lat="43.238334" lon="-116.366600">' +

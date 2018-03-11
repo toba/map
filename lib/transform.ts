@@ -1,9 +1,6 @@
-import { MapProperties } from '../types/';
+import { MapProperties } from './types';
 import { is, titleCase } from '@toba/tools';
 
-/**
- * Travel restriction categories.
- */
 const vehicle: { [key: string]: string } = {
    ATV: 'ATV',
    AUTOMOBILE: 'Automobile',

@@ -1,13 +1,9 @@
 /// <reference types="geojson" />
 
-//import { Photo, MapPhoto } from '../types/';
+import { MapPhoto } from './types';
 import { is } from '@toba/tools';
-//import log from '../logger';
-import gpx from './gpx';
-import kml from './kml';
-import index from './';
-//import config from '../config';
-import measure from './measure';
+import { Index } from './index';
+import { measure, gpx, kml } from '../index';
 import transform from './transform';
 import { DOMParser as DOM } from 'xmldom';
 
@@ -45,7 +41,8 @@ export const geometry = (
  * Convert GPX to GeoJSON with calculated speed and distance values.
  */
 function trackFromGPX(
-   node: Element
+   node: Element,
+   maxPossibleSpeed: number = 0
 ): GeoJSON.Feature<GeoJSON.LineString | GeoJSON.MultiLineString> {
    let count = 0;
    let topSpeed = 0;
@@ -61,12 +58,9 @@ function trackFromGPX(
 
          return measure.simplify(
             line.map(point => {
-               const speed = point[index.SPEED];
+               const speed = point[Index.Speed];
 
-               if (
-                  config.map.maxPossibleSpeed === 0 ||
-                  speed < config.map.maxPossibleSpeed
-               ) {
+               if (maxPossibleSpeed === 0 || speed < maxPossibleSpeed) {
                   count++;
                   totalSpeed += speed;
                   if (speed > topSpeed) {
@@ -153,7 +147,7 @@ export function featuresFromGPX(
    try {
       gpx = new DOM().parseFromString(gpxString);
    } catch (ex) {
-      log.error(ex.toString());
+      //log.error(ex.toString());
       return null;
    }
    const tracks = parseNodes(gpx, 'trk', trackFromGPX);
@@ -219,7 +213,7 @@ export const featuresFromKML = (sourceName: string) => (
       try {
          doc = new DOM().parseFromString(kml);
       } catch (ex) {
-         log.error(ex.toString());
+         //log.error(ex.toString());
          return null;
       }
    } else {

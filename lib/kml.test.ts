@@ -1,14 +1,12 @@
-import kml from './kml';
+import { kml } from '../index';
+import { readFile } from '@toba/test';
 
-//const mock = require('../mocks/');
-
-it.skip('extracts KML from KMZ', () =>
-   mock
-      .loadFile('motorcycle.kmz')
+test('extracts KML from KMZ', () =>
+   readFile('motorcycle.kmz')
       .then(kml.fromKMZ)
       .then(doc => {
          expect(doc).toBeDefined();
-      })); //.timeout(10000);
+      }));
 
 test('parses HTML property descriptions', () => {
    const properties = {

@@ -27,4 +27,4 @@ function firstNode(node: Element | Document, tag: string): Element {
 const numberAttribute = (dom: Element, name: string) =>
    parseFloat(dom.getAttribute(name));
 
-export default { value, firstValue, firstNode, numberAttribute };
+export const xml = { value, firstValue, firstNode, numberAttribute };

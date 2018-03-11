@@ -1,12 +1,10 @@
-import measure from './measure';
-import { time } from '../constants';
+import { measure } from '../index';
+import { Time } from '@toba/tools';
 
 function expectGeoPoint(point: number[]): number[] {
    expect(point).toBeInstanceOf(Array);
-   expect(point[0]).toBeGreaterThanOrEqual(-180);
-   expect(point[0]).toBeLessThanOrEqual(180);
-   expect(point[1]).toBeGreaterThanOrEqual(-90);
-   expect(point[1]).toBeLessThanOrEqual(90);
+   expect(point[0]).toBeWithin(-180, 180);
+   expect(point[1]).toBeWithin(-90, 90);
    return point;
 }
 
@@ -38,7 +36,7 @@ test('identifies points at the same location', () => {
 
 test('calculates speed between two points', () => {
    const p1 = expectGeoPoint([-122, 48, 0, 100]);
-   const p2 = expectGeoPoint([-120, 50, 0, 100 + time.HOUR]);
+   const p2 = expectGeoPoint([-120, 50, 0, 100 + Time.Hour]);
 
    expect(measure.speed(p1, p2)).toBeCloseTo(165, 1);
 });

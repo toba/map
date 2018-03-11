@@ -1,8 +1,19 @@
-import config from '../config';
-import { is } from '@toba/tools';
-import xml from './xml';
-import measure from './measure';
-import index from './';
+//import config from '../config';
+import { is, merge } from '@toba/tools';
+import { measure } from '../index';
+import { Index } from './index';
+import { xml } from './xml';
+
+export interface LocationConfig {
+   checkPrivacy: boolean;
+   privacyCenter?: number[];
+   privacyMiles?: number;
+}
+
+const defaultConfig: LocationConfig = {
+   checkPrivacy: false,
+   privacyMiles: 1
+};
 
 /**
  * Return location as [latitude, longitude, elevation, time, speed]
@@ -11,20 +22,25 @@ import index from './';
  *
  * http://nationalatlas.gov/articles/mapping/a_latlong.html
  */
-export function location(node: Element): number[] {
+export function location(
+   node: Element,
+   config: LocationConfig = null
+): number[] {
    const location = new Array(5);
    const elevation = xml.firstNode(node, 'ele'); // meters
    const t = xml.firstNode(node, 'time'); // UTC
 
+   config = config === null ? defaultConfig : merge(config, defaultConfig);
+
    // WGS84 decimal degrees
-   location[index.LON] = xml.numberAttribute(node, 'lon');
-   location[index.LAT] = xml.numberAttribute(node, 'lat');
+   location[Index.Longitude] = xml.numberAttribute(node, 'lon');
+   location[Index.Latitude] = xml.numberAttribute(node, 'lat');
 
    // exclude points close to home
    if (
-      config.map.checkPrivacy &&
-      measure.pointDistance(location, config.map.privacyCenter) <
-         config.map.privacyMiles
+      config.checkPrivacy &&
+      measure.pointDistance(location, config.privacyCenter) <
+         config.privacyMiles
    ) {
       return null;
    }
@@ -32,15 +48,15 @@ export function location(node: Element): number[] {
    if (is.value(elevation)) {
       const m = parseFloat(xml.value(elevation));
       // convert meters to whole feet
-      location[index.ELEVATION] = Math.round(m * 3.28084);
+      location[Index.Elevation] = Math.round(m * 3.28084);
    }
 
    if (is.value(t)) {
       const d = new Date(xml.value(t));
-      location[index.TIME] = d.getTime();
+      location[Index.Time] = d.getTime();
    }
    // speed will be calculated later
-   location[index.SPEED] = 0;
+   location[Index.Speed] = 0;
 
    return location;
 }
@@ -81,9 +97,7 @@ export const line = (node: Element, name: string): number[][] =>
       .filter(p => is.value(p))
       .map((p, i, line) => {
          if (i > 0) {
-            p[index.SPEED] = measure.speed(p, line[i - 1]);
+            p[Index.Speed] = measure.speed(p, line[i - 1]);
          }
          return p;
       });
-
-export default { location, line, properties };
