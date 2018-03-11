@@ -1,12 +1,12 @@
 import { geoJSON, kml } from '../index';
 import { readFile } from '@toba/test';
 
-function expectGeoPoint(point: number[]) {
-   expect(point).toBeInstanceOf(Array);
-   expect(point[0]).within(-180, 180);
-   expect(point[1]).within(-90, 90);
-   return point;
-}
+// function expectGeoPoint(point: number[]) {
+//    expect(point).toBeInstanceOf(Array);
+//    expect(point[0]).within(-180, 180);
+//    expect(point[1]).within(-90, 90);
+//    return point;
+// }
 
 test('converts GPX files to GeoJSON', () => {
    const post = { key: 'whatever' };
