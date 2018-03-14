@@ -2,7 +2,7 @@ import { kml } from '../index';
 import { readFile } from '@toba/test';
 
 test('extracts KML from KMZ', () =>
-   readFile('motorcycle.kmz')
+   readFile('__mocks__/motorcycle.kmz')
       .then(kml.fromKMZ)
       .then(doc => {
          expect(doc).toBeDefined();

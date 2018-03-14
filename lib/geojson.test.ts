@@ -1,5 +1,5 @@
 import { geoJSON, kml } from '../index';
-import { readFile } from '@toba/test';
+import { readFile, readFileText } from '@toba/test';
 
 // function expectGeoPoint(point: number[]) {
 //    expect(point).toBeInstanceOf(Array);
@@ -9,9 +9,7 @@ import { readFile } from '@toba/test';
 // }
 
 test('converts GPX files to GeoJSON', () => {
-   const post = { key: 'whatever' };
-   return mock.google.drive
-      .loadGPX(post)
+   return readFileText('__mocks__/track.gpx')
       .then(geoJSON.featuresFromGPX)
       .then(geo => {
          expect(geo).toBeDefined();
@@ -31,13 +29,13 @@ test('converts GPX files to GeoJSON', () => {
             '2014-05-18T19:56:51Z'
          );
 
-         first.geometry.coordinates.forEach(expectGeoPoint);
+         //first.geometry.coordinates.forEach(expectGeoPoint);
       });
 });
 
 test('converts KML files to GeoJSON', () =>
    Promise.all([
-      readFile('mines.kmz')
+      readFile('__mocks__/mines.kmz')
          .then(kml.fromKMZ)
          .then(geoJSON.featuresFromKML('Idaho Geological Survey'))
          .then(geo => {
@@ -50,7 +48,7 @@ test('converts KML files to GeoJSON', () =>
             expect(geo.features[0].properties).toHaveProperty('DMSLAT', 443312);
          }),
 
-      readFile('bicycle.kmz')
+      readFile('__mocks__/bicycle.kmz')
          .then(kml.fromKMZ)
          .then(geoJSON.featuresFromKML('Idaho Parks & Recreation'))
          .then(geo => {
