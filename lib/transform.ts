@@ -12,7 +12,7 @@ const vehicle: { [key: string]: string } = {
 /**
  * Update seasonal restriction field.
  */
-function seasonal(
+export function seasonal(
    vehicleKey: string,
    from: MapProperties,
    out: MapProperties
@@ -25,7 +25,7 @@ function seasonal(
 /**
  * Copy labeled values to new labels.
  */
-function relabel(
+export function relabel(
    from: MapProperties,
    out: MapProperties,
    labels: { [key: string]: string }

@@ -1,5 +1,5 @@
 import { kml } from '../index';
-import { readFile } from '@toba/test';
+import { readFile } from './__mocks__/read';
 
 test('extracts KML from KMZ', () =>
    readFile('motorcycle.kmz')

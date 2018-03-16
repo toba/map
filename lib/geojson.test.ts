@@ -1,15 +1,8 @@
 import { geoJSON, kml } from '../index';
-import { readFile, readFileText } from '@toba/test';
-
-// function expectGeoPoint(point: number[]) {
-//    expect(point).toBeInstanceOf(Array);
-//    expect(point[0]).within(-180, 180);
-//    expect(point[1]).within(-90, 90);
-//    return point;
-// }
+import { readFile, readFileText } from './__mocks__/read';
 
 test('converts GPX files to GeoJSON', () => {
-   return readFileText('')
+   return readFileText('track.gpx')
       .then(geoJSON.featuresFromGPX)
       .then(geo => {
          expect(geo).toBeDefined();
