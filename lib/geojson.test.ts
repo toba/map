@@ -2,7 +2,7 @@ import { geoJSON, kml } from '../index';
 import { readFile, readFileText } from './__mocks__/read';
 
 test('converts GPX files to GeoJSON', () => {
-   return readFileText('track.gpx')
+   return readFileText('track-big.gpx')
       .then(geoJSON.featuresFromGPX)
       .then(geo => {
          expect(geo).toBeDefined();
@@ -26,25 +26,26 @@ test('converts GPX files to GeoJSON', () => {
       });
 });
 
-test('converts KML files to GeoJSON', () =>
-   Promise.all([
-      readFile('mines.kmz')
-         .then(kml.fromKMZ)
-         .then(geoJSON.featuresFromKML('Idaho Geological Survey'))
-         .then(geo => {
-            expect(geo).toBeDefined();
-            expect(geo).toHaveProperty('type', geoJSON.Type.Collection);
-            expect(geo).toHaveProperty('features');
-            expect(geo.features).toBeInstanceOf(Array);
-            expect(geo.features).toHaveLength(8843);
-            expect(geo.features[0]).toHaveProperty('properties');
-            expect(geo.features[0].properties).toHaveProperty('DMSLAT', 443312);
-         }),
+test('converts KML files to GeoJSON', () => {
+   const first = readFile('mines.kmz')
+      .then(kml.fromKMZ)
+      .then(geoJSON.featuresFromKML('Idaho Geological Survey'))
+      .then(geo => {
+         expect(geo).toBeDefined();
+         expect(geo).toHaveProperty('type', geoJSON.Type.Collection);
+         expect(geo).toHaveProperty('features');
+         expect(geo.features).toBeInstanceOf(Array);
+         expect(geo.features).toHaveLength(8843);
+         expect(geo.features[0]).toHaveProperty('properties');
+         expect(geo.features[0].properties).toHaveProperty('DMSLAT', 443312);
+      });
 
-      readFile('bicycle.kmz')
-         .then(kml.fromKMZ)
-         .then(geoJSON.featuresFromKML('Idaho Parks & Recreation'))
-         .then(geo => {
-            expect(geo).toBeDefined();
-         })
-   ]));
+   const second = readFile('bicycle.kmz')
+      .then(kml.fromKMZ)
+      .then(geoJSON.featuresFromKML('Idaho Parks & Recreation'))
+      .then(geo => {
+         expect(geo).toBeDefined();
+      });
+
+   return Promise.all([first, second]);
+});

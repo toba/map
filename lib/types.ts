@@ -4,6 +4,17 @@ export enum MapDataType {
    GeoJSON
 }
 
+/**
+ * Elements of a coordinate in the order expected by Mapbox and Google Maps
+ */
+export enum Index {
+   Longitude,
+   Latitude,
+   Elevation,
+   Time,
+   Speed
+}
+
 export interface Location {
    lat: number;
    lon: number;
@@ -39,18 +50,8 @@ export interface MapBounds {
    ne: number[];
 }
 
-//= Duplicates from /src/client/browser.d.ts ==================================
-
 /**
- * Standard response for administrative actions.
- */
-export interface JsonResponse {
-   success: boolean;
-   message: string;
-}
-
-/**
- * GeoJSON properties for post photos.
+ * GeoJSON properties for photos.
  */
 export interface MapPhoto {
    url?: string;

@@ -1,9 +1,8 @@
-import { MapProperties } from './types';
+import { MapProperties, Index } from './types';
 import { is, maybeNumber, titleCase } from '@toba/tools';
 import { xml } from './xml';
 //import * as stream from 'stream';
 import { DOMParser as DOM } from 'xmldom';
-import { Index } from './index';
 import * as JSZip from 'jszip';
 
 /**
@@ -185,3 +184,12 @@ export function properties(
 
    return parseDescription(properties);
 }
+
+export const kml = {
+   fromKMZ,
+   location,
+   line,
+   coordinates,
+   properties,
+   parseDescription
+};

@@ -1,13 +1,12 @@
 /// <reference types="geojson" />
 
-import { MapPhoto } from './types';
+import { MapPhoto, Index } from './types';
 import { is } from '@toba/tools';
-import { Index } from './index';
 import { measure, gpx, kml } from '../index';
 import transform from './transform';
 import { DOMParser as DOM } from 'xmldom';
 
-export enum Type {
+enum Type {
    Feature = 'Feature',
    Collection = 'FeatureCollection',
    Point = 'Point',
@@ -18,7 +17,7 @@ export enum Type {
 /**
  * Empty feature collection.
  */
-export const features = () =>
+const features = () =>
    ({
       type: Type.Collection,
       features: [] as GeoJSON.Feature<any>[]
@@ -28,7 +27,7 @@ export const features = () =>
  * Basic GeoJSON geometry may contain a single point (lat, lon array), an array
  * of points (line) or an array of lines.
  */
-export const geometry = (
+const geometry = (
    type: Type,
    coordinates: number[] | number[][] | number[][][]
 ) =>
@@ -138,9 +137,7 @@ function lineFromKML(
  * http://geojson.org/geojson-spec.html
  * https://github.com/mapbox/togeojson
  */
-export function featuresFromGPX(
-   gpxString: string
-): GeoJSON.FeatureCollection<any> {
+function featuresFromGPX(gpxString: string): GeoJSON.FeatureCollection<any> {
    const geo = features();
    let gpx = null;
 
@@ -164,7 +161,7 @@ export function featuresFromGPX(
  *
  * http://geojson.org/geojson-spec.html
  */
-export const pointFromPhoto = (photo: Photo, partKey?: string) => {
+const pointFromPhoto = (photo: Photo, partKey?: string) => {
    const properties: MapPhoto = { url: photo.size.preview.url };
 
    if (partKey !== undefined) {
@@ -201,9 +198,7 @@ function parseNodes<T extends GeoJSON.GeometryObject>(
  * Curried method captures map `sourceName` to faciliate custom transformation
  * look-ups.
  */
-export const featuresFromKML = (sourceName: string) => (
-   kml: string | Document
-) => {
+const featuresFromKML = (sourceName: string) => (kml: string | Document) => {
    const geo = features();
    let doc: Document = null;
 
@@ -241,3 +236,12 @@ function postProcess(sourceName: string, features: GeoJSON.Feature<any>[]) {
    }
    return features;
 }
+
+export const geoJSON = {
+   Type,
+   features,
+   geometry,
+   pointFromPhoto,
+   featuresFromGPX,
+   featuresFromKML
+};
