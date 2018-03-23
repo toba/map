@@ -1,5 +1,6 @@
 import { measure } from '../index';
 import { Time } from '@toba/tools';
+import '@toba/test';
 
 function expectGeoPoint(point: number[]): number[] {
    expect(point).toBeInstanceOf(Array);
@@ -9,20 +10,20 @@ function expectGeoPoint(point: number[]): number[] {
 }
 
 test('converts between degrees and radians', () => {
-   expect(measure.toRadians(48)).toBeCloseTo(0.8, 1);
-   expect(measure.toRadians(-122)).toBeCloseTo(-2.1, 1);
+   expect(measure.toRadians(48)).toBeWithin(0.8, 0.9);
+   expect(measure.toRadians(-122)).toBeWithin(-2.2, -2.1);
 });
 
 test('calculates distance between points', () => {
    const p1 = expectGeoPoint([-122.0, 48.0]);
    const p2 = expectGeoPoint([-121.0, 49.0]);
 
-   expect(measure.pointDistance(p1, p2)).toBeCloseTo(82, 1);
+   expect(measure.pointDistance(p1, p2)).toBeWithin(82, 83);
 
    const p3 = expectGeoPoint([-118.4081, 33.9425]);
    const p4 = expectGeoPoint([-156.4305, 20.8987]);
 
-   expect(measure.pointDistance(p3, p4)).toBeCloseTo(2482, 1);
+   expect(measure.pointDistance(p3, p4)).toBeWithin(2482, 2483);
 });
 
 test('identifies points at the same location', () => {
@@ -38,7 +39,7 @@ test('calculates speed between two points', () => {
    const p1 = expectGeoPoint([-122, 48, 0, 100]);
    const p2 = expectGeoPoint([-120, 50, 0, 100 + Time.Hour]);
 
-   expect(measure.speed(p1, p2)).toBeCloseTo(165, 1);
+   expect(measure.speed(p1, p2)).toBeWithin(165, 166);
 });
 
 test('calculates distance between points', () => {
@@ -47,5 +48,5 @@ test('calculates distance between points', () => {
       expectGeoPoint([-121, 49]),
       expectGeoPoint([-120, 50])
    ];
-   expect(measure.length(points)).toBeCloseTo(165, 1);
+   expect(measure.length(points)).toBeWithin(165, 166);
 });
