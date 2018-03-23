@@ -49,14 +49,3 @@ export interface MapBounds {
     */
    ne: number[];
 }
-
-/**
- * GeoJSON properties for photos.
- */
-export interface MapPhoto {
-   url?: string;
-   title?: string;
-   partKey?: string;
-   /** Distance from clicked cluster */
-   distance?: number;
-}

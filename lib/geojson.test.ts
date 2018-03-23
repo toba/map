@@ -2,24 +2,24 @@ import { geoJSON, kml } from '../index';
 import { readFile, readFileText } from './__mocks__/read';
 
 test('converts GPX files to GeoJSON', () => {
-   return readFileText('track-big.gpx')
+   return readFileText('track.gpx')
       .then(geoJSON.featuresFromGPX)
       .then(geo => {
          expect(geo).toBeDefined();
          expect(geo).toHaveProperty('type', geoJSON.Type.Collection);
          expect(geo).toHaveProperty('features');
          expect(geo.features).toBeInstanceOf(Array);
-         expect(geo.features).toHaveLength(4);
+         expect(geo.features).toHaveLength(2);
 
          const first = geo.features[0];
          expect(first).toHaveAllProperties('geometry', 'properties');
          expect(first.geometry).toHaveProperty('type', geoJSON.Type.Line);
          expect(first.geometry).toHaveProperty('coordinates');
          expect(first.geometry.coordinates).toBeInstanceOf(Array);
-         expect(first.geometry.coordinates).toHaveLength(200);
+         expect(first.geometry.coordinates).toHaveLength(23);
          expect(first.properties).toHaveProperty(
             'time',
-            '2014-05-18T19:56:51Z'
+            '2013-11-02T18:54:59Z'
          );
 
          //first.geometry.coordinates.forEach(expectGeoPoint);

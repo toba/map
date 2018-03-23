@@ -49,6 +49,9 @@ export function coordinates(node: Element, name: string): number[][][] {
    return null;
 }
 
+/**
+ * Curry function to convert string to number rounded to a number of places.
+ */
 const roundFromString = (places: number) => (n: string) =>
    parseFloat(parseFloat(n).toFixed(places));
 
@@ -60,6 +63,7 @@ export function location(node: Element): number[] {
    const locations = coordinates(node, 'Point');
    if (locations != null && locations.length > 0) {
       if (locations.length > 1) {
+         // TODO this is wrong
          return locations[0][0];
       } else {
          return locations[0][0];
@@ -96,13 +100,6 @@ export function parseDescription(properties: MapProperties): MapProperties {
       }
 
       const tables = html.getElementsByTagName('table');
-      const clean = (text: string) =>
-         is.value(text)
-            ? text
-                 .replace(/[\r\n]/g, '')
-                 .replace('&lt;Null&gt;', '')
-                 .replace('<Null>', '')
-            : null;
 
       let most = 0;
       let index = -1;
@@ -134,28 +131,30 @@ export function parseDescription(properties: MapProperties): MapProperties {
 }
 
 /**
+ * Remove cruft from XML CDATA
+ */
+export const clean = (text: string) =>
+   is.value(text)
+      ? text
+           .replace(/[\r\n]/g, '')
+           .replace('&lt;Null&gt;', '')
+           .replace('<Null>', '')
+      : null;
+
+/**
  * Return KML from KMZ file. Returns the first .kml file found in the archive
  * which should be doc.kml.
  */
-export function fromKMZ(data: Buffer): Promise<Document> {
-   return new Promise((resolve, reject) => {
-      const zip = new JSZip();
-      zip.loadAsync(data).then(archive => {
-         for (const name in archive.files) {
-            if (name.endsWith('.kml')) {
-               archive.files[name].async('text').then((text: string) => {
-                  try {
-                     resolve(new DOM().parseFromString(text));
-                  } catch (ex) {
-                     reject(ex);
-                  }
-               });
-               return;
-            }
-         }
-         reject('No readable KML found in archive');
-      });
-   });
+export async function fromKMZ(data: Buffer) {
+   const zip = new JSZip();
+   const archive = await zip.loadAsync(data);
+   for (const name in archive.files) {
+      if (name.endsWith('.kml')) {
+         const text = await archive.files[name].async('text');
+         return new DOM().parseFromString(text);
+      }
+   }
+   return null;
 }
 
 /**

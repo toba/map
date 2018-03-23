@@ -31,10 +31,11 @@ function speed(p1: number[], p2: number[]): number {
    const d = pointDistance(p1, p2);
    return t > 0 && d > 0 ? d / (t / Time.Hour) : 0;
 }
+
 function duration(line: number[][]): number {
    const firstPoint = line[0];
    const lastPoint = line[line.length - 1];
-   return (lastPoint[Index.Time] - firstPoint[Index.Time]) / (1000 * 60 * 60);
+   return (lastPoint[Index.Time] - firstPoint[Index.Time]) / Time.Hour;
 }
 
 /**
