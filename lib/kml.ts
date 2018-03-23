@@ -11,7 +11,7 @@ import * as JSZip from 'jszip';
  *
  *    -113.2924677415256,44.70498119901985,0 -113.2924051073907,44.70509329841001,0 -113.2922923580428,44.70527906358436,0
  */
-export function coordinates(node: Element, name: string): number[][][] {
+function coordinates(node: Element, name: string): number[][][] {
    const lines = node.getElementsByTagName(name);
 
    if (lines != null && lines.length > 0) {
@@ -59,13 +59,13 @@ const roundFromString = (places: number) => (n: string) =>
  * Return location as `[latitude, longitude, elevation]` or null if the element
  * contains no coordinates.
  */
-export function location(node: Element): number[] {
+function location(node: Element): number[] {
    const locations = coordinates(node, 'Point');
    if (locations != null && locations.length > 0) {
       if (locations.length > 1) {
-         // TODO this is wrong
          return locations[0][0];
       } else {
+         // TODO this seems wrong
          return locations[0][0];
       }
    }
@@ -76,7 +76,7 @@ export function location(node: Element): number[] {
  * Get array of segments (which are arrays of point arrays) or null if the
  * element contains no coordinates.
  */
-export function line(node: Element): number[][][] {
+function line(node: Element): number[][][] {
    const l = coordinates(node, 'LineString');
    return l == null || l.length == 0 ? null : l;
 }
@@ -85,7 +85,7 @@ export function line(node: Element): number[][][] {
  * Extract properties from description HTML table. This seems to be standard
  * output format from ESRI systems.
  */
-export function parseDescription(properties: MapProperties): MapProperties {
+function parseDescription(properties: MapProperties): MapProperties {
    if (/<html/.test(properties.description)) {
       // remove CDATA wrapper
       const source = properties.description
@@ -133,7 +133,7 @@ export function parseDescription(properties: MapProperties): MapProperties {
 /**
  * Remove cruft from XML CDATA
  */
-export const clean = (text: string) =>
+const clean = (text: string) =>
    is.value(text)
       ? text
            .replace(/[\r\n]/g, '')
@@ -145,7 +145,7 @@ export const clean = (text: string) =>
  * Return KML from KMZ file. Returns the first .kml file found in the archive
  * which should be doc.kml.
  */
-export async function fromKMZ(data: Buffer) {
+async function fromKMZ(data: Buffer) {
    const zip = new JSZip();
    const archive = await zip.loadAsync(data);
    for (const name in archive.files) {
@@ -160,10 +160,7 @@ export async function fromKMZ(data: Buffer) {
 /**
  * Properties of a KML node.
  */
-export function properties(
-   node: Element,
-   extras: string[] = []
-): MapProperties {
+function properties(node: Element, extras: string[] = []): MapProperties {
    const names = extras.concat(['name', 'description']);
    const properties: MapProperties = {};
 
@@ -174,14 +171,16 @@ export function properties(
             case 'name':
                value = titleCase(value);
                break;
-            //case 'description': value = value.replace(/[\n\r]/g, ' ').replace(/\s{2,}/g, ' '); break;
+            case 'description':
+               value = value.replace(/[\n\r]/g, ' ').replace(/\s{2,}/g, ' ');
+               break;
          }
          properties[key] = maybeNumber(value);
       }
    }
-   delete properties['description'];
-
    return parseDescription(properties);
+   //delete properties['description'];
+
 }
 
 export const kml = {

@@ -105,16 +105,16 @@ const pointFromGPX = (node: Element): Feature<Point> => ({
    geometry: geometry(Type.Point, gpx.location(node)) as Point
 });
 
-// function pointFromKML(node: Element) {
-//    const location = kml.location(node);
-//    return location == null
-//       ? null
-//       : ({
-//            type: Type.Feature,
-//            properties: kml.properties(node, ['sym']),
-//            geometry: geometry(Type.Point, location)
-//         } as GeoJSON.Feature<GeoJSON.Point>);
-// }
+function pointFromKML(node: Element): Feature<Point> {
+   const location = kml.location(node);
+   return location == null
+      ? null
+      : {
+           type: Type.Feature,
+           properties: kml.properties(node, ['sym']),
+           geometry: geometry(Type.Point, location) as Point
+        };
+}
 
 function lineFromKML(node: Element): Feature<MultiLineString | LineString> {
    const lines = kml.line(node);
@@ -165,15 +165,14 @@ function featuresFromGPX(gpxString: string): FeatureCollection<any> {
  *
  * @param name Name of tag to find
  */
-function parseNodes<T extends GeometryObject>(
+const parseNodes = <T extends GeometryObject>(
    doc: Document,
    name: string,
    parser: (el: Element) => Feature<T>
-): Feature<T>[] {
-   return Array.from(doc.getElementsByTagName(name))
+): Feature<T>[] =>
+   Array.from(doc.getElementsByTagName(name))
       .map(parser)
       .filter(f => is.value(f));
-}
 
 /**
  * Convert KML to GeoJSON. KML places lines and points in the same `Placemark`
@@ -181,8 +180,7 @@ function parseNodes<T extends GeometryObject>(
  * members. The parse method will return null if the element doesn't contain
  * the expected geometry.
  *
- * Curried method captures map `sourceName` to facilitate custom transformation
- * look-ups.
+ * @param sourceName Data source used to identify optional post-processing
  */
 const featuresFromKML = (sourceName: string) => (kml: string | Document) => {
    const geo = features();
@@ -202,9 +200,9 @@ const featuresFromKML = (sourceName: string) => (kml: string | Document) => {
    }
 
    const lines = parseNodes(doc, 'Placemark', lineFromKML);
-   //const points = parseNodes(doc, 'Placemark', pointFromKML);
+   const points = parseNodes(doc, 'Placemark', pointFromKML);
 
-   geo.features = postProcess(sourceName, geo.features.concat(lines));
+   geo.features = postProcess(sourceName, geo.features.concat(lines, points));
 
    return geo;
 };

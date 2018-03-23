@@ -27,7 +27,7 @@ test('converts GPX files to GeoJSON', () => {
 });
 
 test('converts KML files to GeoJSON', () => {
-   const first = readFile('mines.kmz')
+   const mines = readFile('mines.kmz')
       .then(kml.fromKMZ)
       .then(geoJSON.featuresFromKML('Idaho Geological Survey'))
       .then(geo => {
@@ -37,15 +37,32 @@ test('converts KML files to GeoJSON', () => {
          expect(geo.features).toBeInstanceOf(Array);
          expect(geo.features).toHaveLength(8843);
          expect(geo.features[0]).toHaveProperty('properties');
-         expect(geo.features[0].properties).toHaveProperty('DMSLAT', 443312);
+         expect(geo.features[0].properties).toHaveProperty(
+            'Land Owner',
+            'U.S. Forest Service'
+         );
+         expect(geo.features[0].geometry).toHaveProperty(
+            'type',
+            geoJSON.Type.Point
+         );
       });
 
-   const second = readFile('bicycle.kmz')
+   const bikeTrails = readFile('bicycle.kmz')
       .then(kml.fromKMZ)
       .then(geoJSON.featuresFromKML('Idaho Parks & Recreation'))
       .then(geo => {
          expect(geo).toBeDefined();
+         expect(geo).toHaveProperty('type', geoJSON.Type.Collection);
+         expect(geo.features).toHaveLength(2444);
+         expect(geo.features[0].properties).toHaveProperty(
+            'Label',
+            'Wonderpup'
+         );
+         expect(geo.features[0].geometry).toHaveProperty(
+            'type',
+            geoJSON.Type.Line
+         );
       });
 
-   return Promise.all([first, second]);
+   return Promise.all([mines, bikeTrails]);
 });
