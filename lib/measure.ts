@@ -1,11 +1,10 @@
-import { Location } from './types';
+import { Location, Index } from './types';
 //import config from '../config';
 import { Time } from '@toba/tools';
-import { Index } from './index';
 
 const piDeg = Math.PI / 180.0;
 const radiusMiles = 3958.756;
-const radiusKm = 6371.0;
+//const radiusKm = 6371.0;
 //const feetPerMeter = 3.28084;
 const earthRadius = radiusMiles;
 //let elevationConversion = feetPerMeter;
@@ -18,7 +17,7 @@ export enum Unit {
 /**
  * Total distance between all points
  */
-export const length = (points: number[][]) =>
+const length = (points: number[][]) =>
    points.reduce(
       (total, p, i) => total + (i > 0 ? pointDistance(points[i - 1], p) : 0),
       0
@@ -27,16 +26,16 @@ export const length = (points: number[][]) =>
 /**
  * Speed between two points
  */
-export function speed(p1: number[], p2: number[]): number {
+function speed(p1: number[], p2: number[]): number {
    const t = Math.abs(p1[Index.Time] - p2[Index.Time]); // milliseconds
    const d = pointDistance(p1, p2);
    return t > 0 && d > 0 ? d / (t / Time.Hour) : 0;
 }
 
-export function duration(line: number[][]): number {
+function duration(line: number[][]): number {
    const firstPoint = line[0];
    const lastPoint = line[line.length - 1];
-   return (lastPoint[Index.Time] - firstPoint[Index.Time]) / (1000 * 60 * 60);
+   return (lastPoint[Index.Time] - firstPoint[Index.Time]) / Time.Hour;
 }
 
 /**
@@ -53,7 +52,7 @@ export function duration(line: number[][]): number {
  *    c = 2 ⋅ atan2(√a, √(1−a))
  *    d = R ⋅ c
  */
-export function pointDistance(p1: number[], p2: number[]): number {
+function pointDistance(p1: number[], p2: number[]): number {
    if (sameLocation(p1, p2)) {
       return 0;
    }
@@ -75,21 +74,17 @@ export function pointDistance(p1: number[], p2: number[]): number {
 /**
  * Convert degrees to radians
  */
-export const toRadians = (deg: number) => deg * piDeg;
+const toRadians = (deg: number) => deg * piDeg;
 
 /**
  * Convert radians to degrees
  */
-export const toDegrees = (rad: number) => rad * 180 / Math.PI;
+const toDegrees = (rad: number) => rad * 180 / Math.PI;
 
 /**
  * Shortest distance from a point to a segment defined by two points.
  */
-export function pointLineDistance(
-   p: number[],
-   p1: number[],
-   p2: number[]
-): number {
+function pointLineDistance(p: number[], p1: number[], p2: number[]): number {
    let x = p1[Index.Longitude];
    let y = p1[Index.Latitude];
    let Δx = p2[Index.Longitude] - x;
@@ -121,7 +116,7 @@ export function pointLineDistance(
  *
  * http://stackoverflow.com/questions/6671183/calculate-the-center-point-of-multiple-latitude-longitude-coordinate-pairs
  */
-export function centroid(points: number[][]): Location {
+function centroid(points: number[][]): Location {
    const count = points.length;
    if (count == 0) {
       return null;
@@ -161,14 +156,14 @@ export function centroid(points: number[][]): Location {
 /**
  * Whether two points are at the same location (disregarding elevation)
  */
-export const sameLocation = (p1: number[], p2: number[]) =>
+const sameLocation = (p1: number[], p2: number[]) =>
    p1[Index.Latitude] == p2[Index.Latitude] &&
    p1[Index.Longitude] == p2[Index.Longitude];
 
 /**
  * Simplification using Douglas-Peucker algorithm with recursion elimination
  */
-export function simplify(
+function simplify(
    points: number[][],
    maxPointDeviationFeet: number = 0
 ): number[][] {
@@ -214,3 +209,14 @@ export function simplify(
    }
    return points.filter((_p, i) => keep[i] == 1);
 }
+
+export const measure = {
+   speed,
+   length,
+   centroid,
+   duration,
+   toRadians,
+   sameLocation,
+   pointDistance,
+   simplify
+};

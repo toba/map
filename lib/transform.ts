@@ -12,7 +12,7 @@ const vehicle: { [key: string]: string } = {
 /**
  * Update seasonal restriction field.
  */
-function seasonal(
+export function seasonal(
    vehicleKey: string,
    from: MapProperties,
    out: MapProperties
@@ -25,7 +25,7 @@ function seasonal(
 /**
  * Copy labeled values to new labels.
  */
-function relabel(
+export function relabel(
    from: MapProperties,
    out: MapProperties,
    labels: { [key: string]: string }
@@ -40,7 +40,7 @@ function relabel(
 /**
  * Custom property transformations per named map source.
  */
-export default {
+export const transform = {
    ['Idaho Parks & Recreation'](from: MapProperties): MapProperties {
       const out: MapProperties = {};
       const miles: number = from['MILES'] as number;
@@ -74,7 +74,9 @@ export default {
       Object.keys(vehicle).forEach(key => {
          seasonal(key, from, out);
       });
+
       relabel(from, out, { JURISDICTION: who });
+
       if (out[who]) {
          out[who] = titleCase(out[who] as string);
       }

@@ -1,7 +1,7 @@
 //import config from '../config';
 import { is, merge } from '@toba/tools';
 import { measure } from '../index';
-import { Index } from './index';
+import { Index } from './types';
 import { xml } from './xml';
 
 export interface LocationConfig {
@@ -22,10 +22,7 @@ const defaultConfig: LocationConfig = {
  *
  * http://nationalatlas.gov/articles/mapping/a_latlong.html
  */
-export function location(
-   node: Element,
-   config: LocationConfig = null
-): number[] {
+function location(node: Element, config: LocationConfig = null): number[] {
    const location = new Array(5);
    const elevation = xml.firstNode(node, 'ele'); // meters
    const t = xml.firstNode(node, 'time'); // UTC
@@ -64,7 +61,7 @@ export function location(
 /**
  * Properties of a GPX node
  */
-export function properties(
+function properties(
    node: Element,
    extras: string[] = []
 ): { [key: string]: string | number } {
@@ -91,7 +88,7 @@ export function properties(
 /**
  * Get array of point arrays.
  */
-export const line = (node: Element, name: string): number[][] =>
+const line = (node: Element, name: string): number[][] =>
    Array.from(node.getElementsByTagName(name))
       .map(p => location(p))
       .filter(p => is.value(p))
@@ -101,3 +98,5 @@ export const line = (node: Element, name: string): number[][] =>
          }
          return p;
       });
+
+export const gpx = { line, properties, location };

@@ -1,13 +1,18 @@
-/// <reference types="geojson" />
-
-import { MapPhoto } from './types';
+import { Index } from './types';
 import { is } from '@toba/tools';
-import { Index } from './index';
 import { measure, gpx, kml } from '../index';
-import transform from './transform';
+import { transform } from './transform';
 import { DOMParser as DOM } from 'xmldom';
+import {
+   GeometryObject,
+   Feature,
+   FeatureCollection,
+   Point,
+   LineString,
+   MultiLineString
+} from 'geojson';
 
-export enum Type {
+enum Type {
    Feature = 'Feature',
    Collection = 'FeatureCollection',
    Point = 'Point',
@@ -18,24 +23,23 @@ export enum Type {
 /**
  * Empty feature collection.
  */
-export const features = () =>
-   ({
-      type: Type.Collection,
-      features: [] as GeoJSON.Feature<any>[]
-   } as GeoJSON.FeatureCollection<any>);
+const features = <T extends GeometryObject>(): FeatureCollection<T> => ({
+   type: Type.Collection,
+   features: [] as Feature<T>[]
+});
 
 /**
  * Basic GeoJSON geometry may contain a single point (lat, lon array), an array
  * of points (line) or an array of lines.
  */
-export const geometry = (
+const geometry = (
    type: Type,
    coordinates: number[] | number[][] | number[][][]
 ) =>
    ({
       type,
       coordinates
-   } as GeoJSON.DirectGeometryObject);
+   } as GeometryObject);
 
 /**
  * Convert GPX to GeoJSON with calculated speed and distance values.
@@ -43,7 +47,7 @@ export const geometry = (
 function trackFromGPX(
    node: Element,
    maxPossibleSpeed: number = 0
-): GeoJSON.Feature<GeoJSON.LineString | GeoJSON.MultiLineString> {
+): Feature<LineString | MultiLineString> {
    let count = 0;
    let topSpeed = 0;
    let totalTime = 0;
@@ -75,7 +79,7 @@ function trackFromGPX(
    return track.length === 0 || track[0].length === 0
       ? null
       : {
-           type: 'Feature',
+           type: Type.Feature,
            properties: Object.assign(gpx.properties(node), {
               topSpeed: topSpeed,
               avgSpeed: parseFloat((totalSpeed / count).toFixed(1)),
@@ -84,53 +88,52 @@ function trackFromGPX(
            }),
            geometry:
               track.length === 1
-                 ? (geometry(Type.Line, track[0]) as GeoJSON.LineString)
-                 : (geometry(Type.MultiLine, track) as GeoJSON.MultiLineString)
+                 ? (geometry(Type.Line, track[0]) as LineString)
+                 : (geometry(Type.MultiLine, track) as MultiLineString)
         };
 }
 
-const routeFromGPX = (node: Element) =>
-   ({
-      properties: gpx.properties(node),
-      geometry: geometry(Type.Line, gpx.line(node, 'rtept'))
-   } as GeoJSON.Feature<GeoJSON.LineString>);
+const routeFromGPX = (node: Element): Feature<LineString> => ({
+   type: Type.Feature,
+   properties: gpx.properties(node),
+   geometry: geometry(Type.Line, gpx.line(node, 'rtept')) as LineString
+});
 
-const pointFromGPX = (node: Element) =>
-   ({
-      type: Type.Feature,
-      properties: gpx.properties(node, ['sym']),
-      geometry: geometry(Type.Point, gpx.location(node))
-   } as GeoJSON.Feature<GeoJSON.Point>);
+const pointFromGPX = (node: Element): Feature<Point> => ({
+   type: Type.Feature,
+   properties: gpx.properties(node, ['sym']),
+   geometry: geometry(Type.Point, gpx.location(node)) as Point
+});
 
-// function pointFromKML(node:Element) {
-//    const location = kml.location(node);
-//    return (location == null) ? null : {
-//       type: type.FEATURE,
-//       properties: kml.properties(node, ['sym']),
-//       geometry: geometry(type.POINT, location)
-//    }  as GeoJSON.Feature<GeoJSON.Point>;
-// }
+function pointFromKML(node: Element): Feature<Point> {
+   const location = kml.location(node);
+   return location == null
+      ? null
+      : {
+           type: Type.Feature,
+           properties: kml.properties(node, ['sym']),
+           geometry: geometry(Type.Point, location) as Point
+        };
+}
 
-function lineFromKML(
-   node: Element
-): GeoJSON.Feature<GeoJSON.MultiLineString | GeoJSON.LineString> {
+function lineFromKML(node: Element): Feature<MultiLineString | LineString> {
    const lines = kml.line(node);
    if (lines != null) {
-      if (lines.length > 1) {
-         return {
-            type: Type.Feature,
-            properties: kml.properties(node),
-            geometry: geometry(Type.MultiLine, lines)
-         } as GeoJSON.Feature<GeoJSON.MultiLineString>;
-      } else {
-         return {
-            type: Type.Feature,
-            properties: kml.properties(node),
-            geometry: geometry(Type.Line, lines[0])
-         } as GeoJSON.Feature<GeoJSON.LineString>;
-      }
+      return lines.length > 1
+         ? lineFeature<MultiLineString>(Type.MultiLine, node, lines)
+         : lineFeature<LineString>(Type.Line, node, lines[0]);
    }
 }
+
+const lineFeature = <T extends GeometryObject>(
+   type: Type,
+   node: Element,
+   lines: number[][] | number[][][]
+): Feature<T> => ({
+   type: Type.Feature,
+   properties: kml.properties(node),
+   geometry: geometry(type, lines) as T
+});
 
 /**
  * Create GeoJSON from GPX string.
@@ -138,9 +141,7 @@ function lineFromKML(
  * http://geojson.org/geojson-spec.html
  * https://github.com/mapbox/togeojson
  */
-export function featuresFromGPX(
-   gpxString: string
-): GeoJSON.FeatureCollection<any> {
+function featuresFromGPX(gpxString: string): FeatureCollection<any> {
    const geo = features();
    let gpx = null;
 
@@ -160,37 +161,18 @@ export function featuresFromGPX(
 }
 
 /**
- * Convert photo to GeoJSON feature.
- *
- * http://geojson.org/geojson-spec.html
- */
-export const pointFromPhoto = (photo: Photo, partKey?: string) => {
-   const properties: MapPhoto = { url: photo.size.preview.url };
-
-   if (partKey !== undefined) {
-      // implies GeoJSON for single post
-      properties.title = photo.title;
-      properties.partKey = partKey;
-   }
-   return {
-      type: Type.Feature,
-      properties,
-      geometry: geometry(Type.Point, [photo.longitude, photo.latitude])
-   } as GeoJSON.Feature<any>;
-};
-
-/**
  * Find nodes with a tag name and parse them into GeoJSON.
+ *
+ * @param name Name of tag to find
  */
-function parseNodes<T extends GeoJSON.GeometryObject>(
+const parseNodes = <T extends GeometryObject>(
    doc: Document,
    name: string,
-   parser: (el: Element) => GeoJSON.Feature<T>
-): GeoJSON.Feature<T>[] {
-   return Array.from(doc.getElementsByTagName(name))
+   parser: (el: Element) => Feature<T>
+): Feature<T>[] =>
+   Array.from(doc.getElementsByTagName(name))
       .map(parser)
       .filter(f => is.value(f));
-}
 
 /**
  * Convert KML to GeoJSON. KML places lines and points in the same `Placemark`
@@ -198,12 +180,9 @@ function parseNodes<T extends GeoJSON.GeometryObject>(
  * members. The parse method will return null if the element doesn't contain
  * the expected geometry.
  *
- * Curried method captures map `sourceName` to faciliate custom transformation
- * look-ups.
+ * @param sourceName Data source used to identify optional post-processing
  */
-export const featuresFromKML = (sourceName: string) => (
-   kml: string | Document
-) => {
+const featuresFromKML = (sourceName: string) => (kml: string | Document) => {
    const geo = features();
    let doc: Document = null;
 
@@ -221,9 +200,9 @@ export const featuresFromKML = (sourceName: string) => (
    }
 
    const lines = parseNodes(doc, 'Placemark', lineFromKML);
-   //const points = parseNodes(doc, 'Placemark', pointFromKML);
+   const points = parseNodes(doc, 'Placemark', pointFromKML);
 
-   geo.features = postProcess(sourceName, geo.features.concat(lines));
+   geo.features = postProcess(sourceName, geo.features.concat(lines, points));
 
    return geo;
 };
@@ -232,7 +211,7 @@ export const featuresFromKML = (sourceName: string) => (
  * Apply custom transformation to properties if one is defined for the map
  * source.
  */
-function postProcess(sourceName: string, features: GeoJSON.Feature<any>[]) {
+function postProcess(sourceName: string, features: Feature<any>[]) {
    const tx = transform[sourceName];
    if (tx) {
       features.map(f => {
@@ -241,3 +220,11 @@ function postProcess(sourceName: string, features: GeoJSON.Feature<any>[]) {
    }
    return features;
 }
+
+export const geoJSON = {
+   Type,
+   features,
+   geometry,
+   featuresFromGPX,
+   featuresFromKML
+};
