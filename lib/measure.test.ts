@@ -1,3 +1,4 @@
+import '@toba/test';
 import { measure } from '../index';
 import { Time } from '@toba/tools';
 
@@ -38,7 +39,7 @@ test('calculates speed between two points', () => {
    const p1 = expectGeoPoint([-122, 48, 0, 100]);
    const p2 = expectGeoPoint([-120, 50, 0, 100 + Time.Hour]);
 
-   expect(measure.speed(p1, p2)).toBeCloseTo(165, 1);
+   expect(measure.speed(p1, p2)).toBeWithin(165, 166);
 });
 
 test('calculates distance between points', () => {
@@ -47,5 +48,5 @@ test('calculates distance between points', () => {
       expectGeoPoint([-121, 49]),
       expectGeoPoint([-120, 50])
    ];
-   expect(measure.length(points)).toBeCloseTo(165, 1);
+   expect(measure.length(points)).toBeWithin(165, 166);
 });

@@ -38,24 +38,3 @@ export interface MapBounds {
     */
    ne: number[];
 }
-
-//= Duplicates from /src/client/browser.d.ts ==================================
-
-/**
- * Standard response for administrative actions.
- */
-export interface JsonResponse {
-   success: boolean;
-   message: string;
-}
-
-/**
- * GeoJSON properties for post photos.
- */
-export interface MapPhoto {
-   url?: string;
-   title?: string;
-   partKey?: string;
-   /** Distance from clicked cluster */
-   distance?: number;
-}

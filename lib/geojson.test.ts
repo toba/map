@@ -1,5 +1,6 @@
-import { geoJSON, kml } from '../index';
+import '@toba/test';
 import { readFile, readFileText } from '@toba/test';
+import { geoJSON, kml } from '../index';
 
 // function expectGeoPoint(point: number[]) {
 //    expect(point).toBeInstanceOf(Array);
@@ -19,7 +20,7 @@ test('converts GPX files to GeoJSON', () => {
          expect(geo.features).toHaveLength(4);
 
          const first = geo.features[0];
-         expect(first).to.contain.all.keys(['geometry', 'properties']);
+         expect(first).toHaveAllProperties('geometry', 'properties');
          expect(first.geometry).toHaveProperty('type', geoJSON.Type.Line);
          expect(first.geometry).toHaveProperty('coordinates');
          expect(first.geometry.coordinates).toBeInstanceOf(Array);
