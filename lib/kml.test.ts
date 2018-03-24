@@ -2,7 +2,7 @@ import { kml } from '../index';
 import { readFile } from './__mocks__/read';
 
 test('extracts KML from KMZ', () =>
-   readFile('__mocks__/motorcycle.kmz')
+   readFile('motorcycle.kmz')
       .then(kml.fromKMZ)
       .then(doc => {
          expect(doc).toBeDefined();

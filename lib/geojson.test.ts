@@ -1,5 +1,4 @@
 import '@toba/test';
-import { readFile, readFileText } from '@toba/test';
 import { geoJSON, kml } from '../index';
 import { readFile, readFileText } from './__mocks__/read';
 
