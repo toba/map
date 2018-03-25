@@ -7,5 +7,6 @@ export {
    Location,
    MapSource,
    MapProperties,
-   MapBounds
+   MapBounds,
+   Transformer
 } from './lib/types';

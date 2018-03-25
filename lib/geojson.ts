@@ -1,4 +1,4 @@
-import { Index } from './types';
+import { Index, Transformer } from './types';
 import { is } from '@toba/tools';
 import { measure, gpx, kml } from '../index';
 import { transform } from './transform';
@@ -180,9 +180,11 @@ const parseNodes = <T extends GeometryObject>(
  * members. The parse method will return null if the element doesn't contain
  * the expected geometry.
  *
- * @param sourceName Data source used to identify optional post-processing
+ * @param transformer Optional post-processing method
  */
-const featuresFromKML = (sourceName: string) => (kml: string | Document) => {
+const featuresFromKML = (transformer: Transformer = null) => (
+   kml: string | Document
+) => {
    const geo = features();
    let doc: Document = null;
 
@@ -202,20 +204,21 @@ const featuresFromKML = (sourceName: string) => (kml: string | Document) => {
    const lines = parseNodes(doc, 'Placemark', lineFromKML);
    const points = parseNodes(doc, 'Placemark', pointFromKML);
 
-   geo.features = postProcess(sourceName, geo.features.concat(lines, points));
+   geo.features = postProcess(geo.features.concat(lines, points), transformer);
 
    return geo;
 };
 
 /**
- * Apply custom transformation to properties if one is defined for the map
- * source.
+ * Apply custom transformation to properties.
  */
-function postProcess(sourceName: string, features: Feature<any>[]) {
-   const tx = transform[sourceName];
-   if (tx) {
+function postProcess(
+   features: Feature<any>[],
+   transformer: Transformer = null
+) {
+   if (transformer != null) {
       features.map(f => {
-         f.properties = tx(f.properties);
+         f.properties = transformer(f.properties);
       });
    }
    return features;

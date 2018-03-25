@@ -1,6 +1,10 @@
 import '@toba/test';
 import { geoJSON, kml } from '../index';
 import { readFile, readFileText } from './__mocks__/read';
+import {
+   mines as transformMines,
+   trails as transformTrails
+} from './__mocks__/transform';
 
 test('converts GPX files to GeoJSON', () => {
    return readFileText('track.gpx')
@@ -30,7 +34,7 @@ test('converts GPX files to GeoJSON', () => {
 test('converts KML files to GeoJSON', () => {
    const mines = readFile('mines.kmz')
       .then(kml.fromKMZ)
-      .then(geoJSON.featuresFromKML('Idaho Geological Survey'))
+      .then(geoJSON.featuresFromKML(transformMines))
       .then(geo => {
          expect(geo).toBeDefined();
          expect(geo).toHaveProperty('type', geoJSON.Type.Collection);
@@ -50,7 +54,7 @@ test('converts KML files to GeoJSON', () => {
 
    const bikeTrails = readFile('bicycle.kmz')
       .then(kml.fromKMZ)
-      .then(geoJSON.featuresFromKML('Idaho Parks & Recreation'))
+      .then(geoJSON.featuresFromKML(transformTrails))
       .then(geo => {
          expect(geo).toBeDefined();
          expect(geo).toHaveProperty('type', geoJSON.Type.Collection);
