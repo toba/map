@@ -1,6 +1,6 @@
 {
    "name": "@toba/map",
-   "version": "1.0.2",
+   "version": "1.0.3",
    "description": "Toba map module",
    "private": false,
    "author": {
@@ -11,9 +11,7 @@
    "publishConfig": {
       "access": "public"
    },
-   "files": [
-      "index.ts"
-   ],
+   "files": ["index.ts"],
    "scripts": {
       "test": "jest --coverage"
    },

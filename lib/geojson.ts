@@ -1,7 +1,6 @@
 import { Index, Transformer } from './types';
 import { is } from '@toba/tools';
 import { measure, gpx, kml } from '../index';
-import { transform } from './transform';
 import { DOMParser as DOM } from 'xmldom';
 import {
    GeometryObject,

@@ -1,6 +1,10 @@
 import { kml } from '../index';
 import { readFile } from './__mocks__/read';
 
+beforeAll(() => {
+   console.warn = jest.fn();
+});
+
 test('extracts KML from KMZ', () =>
    readFile('motorcycle.kmz')
       .then(kml.fromKMZ)
