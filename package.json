@@ -1,6 +1,6 @@
 {
    "name": "@toba/map",
-   "version": "1.0.4",
+   "version": "1.0.5",
    "description": "Toba map module",
    "private": false,
    "author": {
@@ -13,12 +13,12 @@
    },
    "files": [
       "index.ts",
-      "geojson.ts",
-      "gpx.ts",
-      "kml.ts",
-      "measure.ts",
-      "types.ts",
-      "xml.ts"
+      "lib/geojson.ts",
+      "lib/gpx.ts",
+      "lib/kml.ts",
+      "lib/measure.ts",
+      "lib/types.ts",
+      "lib/xml.ts"
    ],
    "scripts": {
       "test": "jest --coverage"
