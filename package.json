@@ -1,6 +1,6 @@
 {
    "name": "@toba/map",
-   "version": "1.0.3",
+   "version": "1.0.4",
    "description": "Toba map module",
    "private": false,
    "author": {
@@ -11,7 +11,15 @@
    "publishConfig": {
       "access": "public"
    },
-   "files": ["index.ts"],
+   "files": [
+      "index.ts",
+      "geojson.ts",
+      "gpx.ts",
+      "kml.ts",
+      "measure.ts",
+      "types.ts",
+      "xml.ts"
+   ],
    "scripts": {
       "test": "jest --coverage"
    },
@@ -36,7 +44,7 @@
       "tabWidth": 3
    },
    "dependencies": {
-      "@toba/tools": "^1.13.0",
+      "@toba/tools": "^1.16.0",
       "@types/geojson": "^7946.0.2",
       "xmldom": "^0.1.27"
    }
