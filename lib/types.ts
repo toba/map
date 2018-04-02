@@ -1,3 +1,9 @@
+import { GeometryObject, Feature } from 'geojson';
+
+export interface IMappable<T extends GeometryObject> {
+   geoJSON(): Feature<T>;
+}
+
 export enum MapDataType {
    KMZ,
    KML,

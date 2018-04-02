@@ -1,6 +1,6 @@
 {
    "name": "@toba/map",
-   "version": "1.0.6",
+   "version": "1.0.7",
    "description": "Toba map module",
    "private": false,
    "author": {
@@ -29,7 +29,7 @@
       "@types/jszip": "^3.1.3",
       "@types/xmldom": "^0.1.29",
       "prettier": "^1.11.0",
-      "typescript": "^2.7.0"
+      "typescript": "^2.8.0"
    },
    "repository": {
       "type": "git",

@@ -8,5 +8,6 @@ export {
    MapSource,
    MapProperties,
    MapBounds,
-   Transformer
+   Transformer,
+   IMappable
 } from './lib/types';
