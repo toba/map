@@ -3,7 +3,7 @@ import { is } from '@toba/tools';
 /**
  * Node content.
  *
- * https://developer.mozilla.org/en-US/docs/Web/API/Node.normalize
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Node.normalize
  */
 function value(node: Element | Node | Document): string {
    if (is.value(node) && node.normalize) {

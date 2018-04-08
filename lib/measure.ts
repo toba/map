@@ -42,10 +42,10 @@ function duration(line: number[][]): number {
  * Distance between geographic points accounting for earth curvature
  * South latitudes are negative, east longitudes are positive
  *
- * http://stackoverflow.com/questions/3694380/calculating-distance-between-two-points-using-latitude-longitude-what-am-i-doi
- * http://www.geodatasource.com/developers/javascript
- * http://www.movable-type.co.uk/scripts/latlong.html
- * http://boulter.com/gps/distance/
+ * @see http://stackoverflow.com/questions/3694380/calculating-distance-between-two-points-using-latitude-longitude-what-am-i-doi
+ * @see http://www.geodatasource.com/developers/javascript
+ * @see http://www.movable-type.co.uk/scripts/latlong.html
+ * @see http://boulter.com/gps/distance/
  *
  *    Given φ is latitude radians, λ is longitude radians, R is earth radius:
  *    a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
@@ -114,7 +114,7 @@ function pointLineDistance(p: number[], p1: number[], p2: number[]): number {
 /**
  * Find center of coordinates. Points are ordered as longitude, latitude.
  *
- * http://stackoverflow.com/questions/6671183/calculate-the-center-point-of-multiple-latitude-longitude-coordinate-pairs
+ * @see http://stackoverflow.com/questions/6671183/calculate-the-center-point-of-multiple-latitude-longitude-coordinate-pairs
  */
 function centroid(points: number[][]): Location {
    const count = points.length;

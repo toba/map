@@ -4,6 +4,7 @@
       {
          "label": "Test",
          "command": "./node_modules/.bin/jest",
+         "args": ["--verbose"],
          "type": "shell",
          "group": "test",
          "problemMatcher": []

@@ -137,8 +137,8 @@ const lineFeature = <T extends GeometryObject>(
 /**
  * Create GeoJSON from GPX string.
  *
- * http://geojson.org/geojson-spec.html
- * https://github.com/mapbox/togeojson
+ * @see http://geojson.org/geojson-spec.html
+ * @see https://github.com/mapbox/togeojson
  */
 function featuresFromGPX(gpxString: string): FeatureCollection<any> {
    const geo = features();

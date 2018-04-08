@@ -1,3 +1,4 @@
+import '@toba/test';
 import { DOMParser as DOM } from 'xmldom';
 import { xml } from './xml';
 

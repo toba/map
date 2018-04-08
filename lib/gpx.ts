@@ -20,7 +20,7 @@ const defaultConfig: LocationConfig = {
  * A degree of latitude is approximately 69 miles.
  * A degree of longitude is about 69 miles at the equater, 0 at the poles.
  *
- * http://nationalatlas.gov/articles/mapping/a_latlong.html
+ * @see http://nationalatlas.gov/articles/mapping/a_latlong.html
  */
 function location(node: Element, config: LocationConfig = null): number[] {
    const location = new Array(5);

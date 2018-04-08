@@ -46,7 +46,7 @@ export type Transformer = (from: MapProperties) => MapProperties;
 /**
  * Mapbox compatible bounds in longitude, latitude order.
  *
- * https://www.mapbox.com/mapbox-gl-js/api/#lnglatboundslike
+ * @see https://www.mapbox.com/mapbox-gl-js/api/#lnglatboundslike
  */
 export interface MapBounds {
    /**
