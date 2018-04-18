@@ -1,5 +1,7 @@
 import { GeometryObject, Feature } from 'geojson';
 
+export type TrackFeatures = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+
 export interface IMappable<T extends GeometryObject> {
    geoJSON(): Feature<T>;
 }

@@ -9,5 +9,6 @@ export {
    MapProperties,
    MapBounds,
    Transformer,
+   TrackFeatures,
    IMappable
 } from './lib/types';
