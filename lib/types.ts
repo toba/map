@@ -13,7 +13,8 @@ export enum MapDataType {
 }
 
 /**
- * Elements of a coordinate in the order expected by Mapbox and Google Maps
+ * Elements of a coordinate array in the order expected by Mapbox and Google
+ * Maps.
  */
 export enum Index {
    Longitude,
