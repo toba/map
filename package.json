@@ -1,6 +1,6 @@
 {
    "name": "@toba/map",
-   "version": "1.1.0",
+   "version": "1.1.1",
    "description": "Toba map module",
    "private": false,
    "author": {
@@ -17,6 +17,7 @@
       "lib/gpx.ts",
       "lib/kml.ts",
       "lib/measure.ts",
+      "lib/transform.ts",
       "lib/types.ts",
       "lib/xml.ts"
    ],
