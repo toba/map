@@ -1,7 +1,7 @@
 export type TrackFeatures = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
 
 export interface IMappable<T extends GeoJSON.GeometryObject> {
-   geoJSON(): GeoJSON.Feature<T> | GeoJSON.FeatureCollection<T>;
+   geoJSON(): Promise<GeoJSON.Feature<T> | GeoJSON.FeatureCollection<T>>;
 }
 
 export enum MapDataType {
