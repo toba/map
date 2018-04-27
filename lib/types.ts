@@ -34,6 +34,7 @@ export interface MapSource {
    provider: string;
    type?: MapDataType;
    url: string;
+   transform?: Transformer;
 }
 
 export interface MapProperties {

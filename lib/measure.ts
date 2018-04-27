@@ -1,5 +1,4 @@
 import { Location, Index } from './types';
-//import config from '../config';
 import { Time } from '@toba/tools';
 
 const piDeg = Math.PI / 180.0;
