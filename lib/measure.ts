@@ -1,5 +1,5 @@
 import { Location, Index } from './types';
-import { Time } from '@toba/tools';
+import { Duration } from '@toba/tools';
 
 const piDeg = Math.PI / 180.0;
 const radiusMiles = 3958.756;
@@ -28,13 +28,13 @@ const length = (points: number[][]) =>
 function speed(p1: number[], p2: number[]): number {
    const t = Math.abs(p1[Index.Time] - p2[Index.Time]); // milliseconds
    const d = pointDistance(p1, p2);
-   return t > 0 && d > 0 ? d / (t / Time.Hour) : 0;
+   return t > 0 && d > 0 ? d / (t / Duration.Hour) : 0;
 }
 
 function duration(line: number[][]): number {
    const firstPoint = line[0];
    const lastPoint = line[line.length - 1];
-   return (lastPoint[Index.Time] - firstPoint[Index.Time]) / Time.Hour;
+   return (lastPoint[Index.Time] - firstPoint[Index.Time]) / Duration.Hour;
 }
 
 /**
