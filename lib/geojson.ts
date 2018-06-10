@@ -1,5 +1,5 @@
-import { Index, Transformer } from './types';
 import { is } from '@toba/tools';
+import { Index, Transformer } from './types';
 import { measure, gpx, kml } from '../index';
 import { DOMParser as DOM } from 'xmldom';
 import {
