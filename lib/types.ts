@@ -1,9 +1,10 @@
-import { GeometryObject, Feature } from 'geojson';
-
 export type TrackFeatures = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
 
-export interface IMappable<T extends GeometryObject> {
-   geoJSON(): Feature<T>;
+export interface IMappable<T extends GeoJSON.GeometryObject> {
+   geoJSON():
+      | Promise<GeoJSON.Feature<T> | GeoJSON.FeatureCollection<T>>
+      | GeoJSON.Feature<T>
+      | GeoJSON.FeatureCollection<T>;
 }
 
 export enum MapDataType {
@@ -34,6 +35,7 @@ export interface MapSource {
    provider: string;
    type?: MapDataType;
    url: string;
+   transform?: Transformer;
 }
 
 export interface MapProperties {

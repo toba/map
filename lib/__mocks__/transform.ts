@@ -1,5 +1,6 @@
 import { MapProperties } from '../types';
 import { is, titleCase } from '@toba/tools';
+import { relabel } from '../transform';
 
 const vehicle: { [key: string]: string } = {
    ATV: 'ATV',
@@ -10,21 +11,6 @@ const vehicle: { [key: string]: string } = {
 };
 
 /**
- * Copy labeled values to new labels.
- */
-function relabel(
-   from: MapProperties,
-   out: MapProperties,
-   labels: { [key: string]: string }
-): void {
-   Object.keys(labels).forEach(key => {
-      if (from[key]) {
-         out[labels[key]] = from[key];
-      }
-   });
-}
-
-/**
  * Update seasonal restriction field.
  */
 function seasonal(
@@ -32,7 +18,7 @@ function seasonal(
    from: MapProperties,
    out: MapProperties
 ): void {
-   if (from[vehicleKey]) {
+   if (is.defined(from, vehicleKey)) {
       out[vehicle[vehicleKey] + ' Allowed'] = from[vehicleKey];
    }
 }
@@ -47,12 +33,12 @@ export function trails(from: MapProperties): MapProperties {
    if (miles && miles > 0) {
       out['Miles'] = miles;
    }
-   if (is.value(label)) {
-      label = label.toString().trim();
+   if (is.value<string>(label)) {
+      label = label.trim();
    }
 
    if (!is.empty(name) && !is.empty(label)) {
-      name = titleCase(name.toString().trim());
+      name = titleCase(name.trim());
       // label is usually just a number so prefer name when supplied
       const num = label.replace(/\D/g, '');
       // some names alread include the road or trail number and
@@ -73,7 +59,7 @@ export function trails(from: MapProperties): MapProperties {
 
    relabel(from, out, { JURISDICTION: who });
 
-   if (out[who]) {
+   if (is.defined(out, who)) {
       out[who] = titleCase(out[who] as string);
    }
 
