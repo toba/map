@@ -1,6 +1,6 @@
 {
    "name": "@toba/map",
-   "version": "1.2.2",
+   "version": "1.2.3",
    "description": "Toba map module",
    "private": false,
    "author": {
@@ -26,7 +26,7 @@
    },
    "devDependencies": {
       "@toba/build": "^1.5.0",
-      "@toba/test": "^1.13.0",
+      "@toba/test": "^1.14.0",
       "@types/jszip": "^3.1.3",
       "@types/xmldom": "^0.1.29",
       "prettier": "^1.13.0",
@@ -44,7 +44,7 @@
       "tabWidth": 3
    },
    "dependencies": {
-      "@toba/tools": "^3.0.0",
+      "@toba/tools": "^3.1.0",
       "@types/geojson": "^7946.0.2",
       "jszip": "^3.1.5",
       "xmldom": "^0.1.27"
