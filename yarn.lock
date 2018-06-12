@@ -3,14 +3,14 @@
 
 
 "@babel/code-frame@^7.0.0-beta.35":
-  version "7.0.0-beta.49"
-  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0-beta.49.tgz#becd805482734440c9d137e46d77340e64d7f51b"
+  version "7.0.0-beta.50"
+  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0-beta.50.tgz#45dcddf66dd003c511019af4ceffde91e8121772"
   dependencies:
-    "@babel/highlight" "7.0.0-beta.49"
+    "@babel/highlight" "7.0.0-beta.50"
 
-"@babel/highlight@7.0.0-beta.49":
-  version "7.0.0-beta.49"
-  resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.0.0-beta.49.tgz#96bdc6b43e13482012ba6691b1018492d39622cc"
+"@babel/highlight@7.0.0-beta.50":
+  version "7.0.0-beta.50"
+  resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.0.0-beta.50.tgz#fb0ccbd720de30985111f5af4ff6538080208ef0"
   dependencies:
     chalk "^2.0.0"
     esutils "^2.0.2"
@@ -45,8 +45,8 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.0.tgz#50c1e2260ac0ed9439a181de3725a0168d59c48a"
 
 "@toba/build@^1.5.0":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@toba/build/-/build-1.5.1.tgz#20d07fc1a941cb84fd42fc0d7a7a2ba53352cef6"
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@toba/build/-/build-1.7.1.tgz#da7ad0bd5c66d98aa8a7b5809949c58401867d8f"
   dependencies:
     stylelint "^9.2.0"
     stylelint-config-standard "^18.2.0"
@@ -56,29 +56,29 @@
     tslint-consistent-codestyle "^1.13.0"
 
 "@toba/logger@^1.0.4":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@toba/logger/-/logger-1.0.6.tgz#b789b393bf017ea7b3fe6277f913c8004379e737"
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@toba/logger/-/logger-1.0.9.tgz#035758df52f90235e94c5be4db2f0a003441ad81"
   dependencies:
-    "@toba/tools" "^3.1.0"
+    "@toba/tools" "^3.0.0"
     chalk "^2.4.0"
     flat "^4.0.0"
     logfmt "^1.2.0"
 
 "@toba/test@^1.14.0":
-  version "1.14.3"
-  resolved "https://registry.yarnpkg.com/@toba/test/-/test-1.14.3.tgz#0e57414a6542d7dc26df1150279775206e2b78cb"
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/@toba/test/-/test-1.16.0.tgz#0654d88b74e3c39a17d9097a5f15c3db987242cc"
   dependencies:
     "@toba/logger" "^1.0.4"
-    "@toba/tools" "^3.1.0"
+    "@toba/tools" "^3.2.0"
     "@types/jest" "^23.0.0"
     "@types/node" "^10.3.0"
     jest "^23.1.0"
     jest-localstorage-mock "^2.2.0"
     ts-jest "^22.4.0"
 
-"@toba/tools@^3.1.0":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@toba/tools/-/tools-3.1.1.tgz#cb1328878eefe9b7a8ac1eacbe80358cce7684c2"
+"@toba/tools@^3.0.0", "@toba/tools@^3.1.0", "@toba/tools@^3.2.0":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@toba/tools/-/tools-3.2.3.tgz#2d05a8607566db6cbd16d1768a6beb6ab7753603"
   dependencies:
     zlib "^1.0.5"
 
@@ -87,8 +87,8 @@
   resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.3.tgz#e5791534ab0acfb2b3a39b713966cfcee85d469f"
 
 "@types/jest@^23.0.0":
-  version "23.0.0"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.0.0.tgz#760cac74f00bb9c3075587716d2b3b4435663bc0"
+  version "23.0.2"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.0.2.tgz#f03f9e6dd2206cc2a2e8fd033161b0b7cf905db6"
 
 "@types/jszip@^3.1.3":
   version "3.1.4"
@@ -642,8 +642,8 @@ camelcase@^4.1.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-4.1.0.tgz#d545635be1e33c542649c69173e5de6acfae34dd"
 
 caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30000851:
-  version "1.0.30000851"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000851.tgz#3b498aebf9f92cf6cff4ab54d13b557c0b590533"
+  version "1.0.30000852"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000852.tgz#8b7510cec030cac7842e52beca2bf292af65f935"
 
 capture-exit@^1.2.0:
   version "1.2.0"
@@ -779,14 +779,14 @@ collection-visit@^1.0.0:
     object-visit "^1.0.0"
 
 color-convert@^1.9.0:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.1.tgz#c1261107aeb2f294ebffec9ed9ecad529a6097ed"
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.2.tgz#49881b8fba67df12a96bdf3f56c0aab9e7913147"
   dependencies:
-    color-name "^1.1.1"
+    color-name "1.1.1"
 
-color-name@^1.1.1:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.3.tgz#a7d0558bd89c42f795dd42328f740831ca53bc25"
+color-name@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.1.tgz#4b1415304cf50028ea81643643bd82ea05803689"
 
 combined-stream@1.0.6, combined-stream@~1.0.5:
   version "1.0.6"
@@ -1103,8 +1103,8 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
 escodegen@^1.9.0:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/escodegen/-/escodegen-1.9.1.tgz#dbae17ef96c8e4bedb1356f4504fa4cc2f7cb7e2"
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/escodegen/-/escodegen-1.10.0.tgz#f647395de22519fbd0d928ffcf1d17e0dec2603e"
   dependencies:
     esprima "^3.1.3"
     estraverse "^4.2.0"

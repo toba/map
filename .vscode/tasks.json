@@ -8,6 +8,13 @@
          "type": "shell",
          "group": "test",
          "problemMatcher": []
+      },
+      {
+         "label": "Build",
+         "command": "./node_modules/.bin/tsc",
+         "type": "shell",
+         "group": "build",
+         "problemMatcher": ["$tsc"]
       }
    ]
 }

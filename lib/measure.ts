@@ -1,5 +1,5 @@
-import { Location, Index } from './types';
 import { Duration } from '@toba/tools';
+import { Location, Index } from './types';
 
 const piDeg = Math.PI / 180.0;
 const radiusMiles = 3958.756;

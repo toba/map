@@ -1,5 +1,5 @@
-import { MapProperties } from './types';
 import { is } from '@toba/tools';
+import { MapProperties } from './types';
 
 /**
  * Copy labeled values to new labels to assist with map property transformation.

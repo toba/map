@@ -1,6 +1,6 @@
 {
    "name": "@toba/map",
-   "version": "1.2.3",
+   "version": "1.2.4",
    "description": "Toba map module",
    "private": false,
    "author": {
@@ -11,17 +11,13 @@
    "publishConfig": {
       "access": "public"
    },
+   "main": "dist/index.js",
+   "types:": "dist/index.d.ts",
    "files": [
-      "index.ts",
-      "lib/geojson.ts",
-      "lib/gpx.ts",
-      "lib/kml.ts",
-      "lib/measure.ts",
-      "lib/transform.ts",
-      "lib/types.ts",
-      "lib/xml.ts"
+      "dist/**/*"
    ],
    "scripts": {
+      "prepublishOnly": "./node_modules/.bin/tsc",
       "test": "jest --coverage"
    },
    "devDependencies": {

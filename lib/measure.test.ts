@@ -1,7 +1,6 @@
 import '@toba/test';
-import { measure } from '../index';
 import { Duration } from '@toba/tools';
-import '@toba/test';
+import { measure } from './index';
 
 function expectGeoPoint(point: number[]): number[] {
    expect(point).toBeInstanceOf(Array);

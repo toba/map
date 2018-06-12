@@ -1,5 +1,5 @@
 import '@toba/test';
-import { geoJSON, kml } from '../index';
+import { geoJSON, kml } from './index';
 import { readFile, readFileText } from './__mocks__/read';
 import {
    mines as transformMines,

@@ -1,5 +1,5 @@
 import '@toba/test';
-import { kml } from '../index';
+import { kml } from './index';
 import { readFile } from './__mocks__/read';
 
 beforeAll(() => {
