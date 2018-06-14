@@ -1,9 +1,18 @@
 import { MapProperties, Index } from './types';
 import { is, maybeNumber, titleCase } from '@toba/tools';
+import { log } from '@toba/logger';
 import { xml } from './xml';
 //import * as stream from 'stream';
-import { DOMParser as DOM } from 'xmldom';
+import { DOMParser, Options } from 'xmldom';
 import * as JSZip from 'jszip';
+
+const xmlConfig: Options = {
+   errorHandler: {
+      warning: log.warn,
+      error: log.error,
+      fatalError: log.error
+   }
+};
 
 /**
  * Coordinate values for one or more segments. In KML these are
@@ -94,7 +103,7 @@ function parseDescription(properties: MapProperties): MapProperties {
       let html: Document = null;
 
       try {
-         html = new DOM().parseFromString(source);
+         html = new DOMParser(xmlConfig).parseFromString(source);
       } catch (ex) {
          return properties;
       }
@@ -151,7 +160,7 @@ async function fromKMZ(data: Buffer) {
    for (const name in archive.files) {
       if (name.endsWith('.kml')) {
          const text = await archive.files[name].async('text');
-         return new DOM().parseFromString(text);
+         return new DOMParser(xmlConfig).parseFromString(text);
       }
    }
    return null;
@@ -180,7 +189,6 @@ function properties(node: Element, extras: string[] = []): MapProperties {
    }
    return parseDescription(properties);
    //delete properties['description'];
-
 }
 
 export const kml = {

@@ -1,9 +1,9 @@
 export { geoJSON } from './geojson';
 export { gpx } from './gpx';
 export { kml } from './kml';
-export { relabel } from './transform';
+export { relabel, loadSource } from './transform';
 export { measure, Unit } from './measure';
-export { MapConfig } from './config';
+export { MapConfig, config } from './config';
 export {
    MapDataType,
    Location,

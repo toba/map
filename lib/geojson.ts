@@ -11,7 +11,7 @@ import {
    MultiLineString
 } from 'geojson';
 
-enum Type {
+export enum Type {
    Feature = 'Feature',
    Collection = 'FeatureCollection',
    Point = 'Point',
@@ -181,8 +181,9 @@ const parseNodes = <T extends GeometryObject>(
  *
  * @param transformer Optional post-processing method
  */
-const featuresFromKML = (transformer: Transformer = null) => (
-   kml: string | Document
+const featuresFromKML = (
+   kml: string | Document,
+   transformer: Transformer = null
 ) => {
    const geo = features();
    let doc: Document = null;

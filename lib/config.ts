@@ -24,7 +24,7 @@ export interface MapConfig {
    /** Maximum number of photo markers to show on Mapbox static map */
    maxMarkers: number;
    /** Link patterns to external maps with `lat`, `lon`, `zoom` and `altitude` tokens */
-   link: {[key: string]: string};
+   link: { [key: string]: string };
    source: { [key: string]: MapSource };
 }
 
@@ -39,8 +39,10 @@ export const config: MapConfig = {
    allowDownload: true,
    maxMarkers: 70,
    link: {
-      googleEarth: 'https://earth.google.com/web/@{lat},{lon},1100a,{altitude}d,35y,0h,0t,0r';
-      gaiaGPS: 'https://www.gaiagps.com/map/?layer=GaiaTopoRasterFeet&lat={lat}&lon={lon}&zoom={zoom}';
+      googleEarth:
+         'https://earth.google.com/web/@{lat},{lon},1100a,{altitude}d,35y,0h,0t,0r',
+      gaiaGPS:
+         'https://www.gaiagps.com/map/?layer=GaiaTopoRasterFeet&lat={lat}&lon={lon}&zoom={zoom}'
    },
    source: {}
 };

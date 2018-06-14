@@ -55,7 +55,7 @@
     tslint-config-prettier "^1.13.0"
     tslint-consistent-codestyle "^1.13.0"
 
-"@toba/logger@^1.0.4":
+"@toba/logger@^1.0.4", "@toba/logger@^1.0.9":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@toba/logger/-/logger-1.0.9.tgz#035758df52f90235e94c5be4db2f0a003441ad81"
   dependencies:
@@ -65,8 +65,8 @@
     logfmt "^1.2.0"
 
 "@toba/test@^1.14.0":
-  version "1.16.2"
-  resolved "https://registry.yarnpkg.com/@toba/test/-/test-1.16.2.tgz#1de34bec03a42e20d00b9b2a7bc11e898754fa1a"
+  version "1.17.1"
+  resolved "https://registry.yarnpkg.com/@toba/test/-/test-1.17.1.tgz#50a419486e4e54f596e6969812b0906ca899d9cb"
   dependencies:
     "@toba/logger" "^1.0.4"
     "@toba/tools" "^3.2.0"
@@ -93,6 +93,12 @@
 "@types/jszip@^3.1.3":
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/@types/jszip/-/jszip-3.1.4.tgz#9b81e3901a6988e9459ac27abf483e6b892251af"
+  dependencies:
+    "@types/node" "*"
+
+"@types/node-fetch@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.1.1.tgz#1e8d0abf4c438828ce9c74b45d564a8a93e48cec"
   dependencies:
     "@types/node" "*"
 
@@ -642,8 +648,8 @@ camelcase@^4.1.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-4.1.0.tgz#d545635be1e33c542649c69173e5de6acfae34dd"
 
 caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30000851:
-  version "1.0.30000853"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000853.tgz#505249fc78d60e20ad47af3c13706d6f9fd209fd"
+  version "1.0.30000855"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000855.tgz#d5a26a9093b932d6266bf4ed9294b41b84945d14"
 
 capture-exit@^1.2.0:
   version "1.2.0"
@@ -2943,6 +2949,10 @@ needle@^2.2.0:
     iconv-lite "^0.4.4"
     sax "^1.2.4"
 
+node-fetch@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.1.2.tgz#ab884e8e7e57e38a944753cec706f788d1768bb5"
+
 node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
@@ -4046,10 +4056,10 @@ stylelint-config-standard@^18.2.0:
     stylelint-config-recommended "^2.1.0"
 
 stylelint-scss@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-3.1.0.tgz#aa46503014d1a6edb2fb4c5fefb73a7d0d5bc644"
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-3.1.1.tgz#caa79b8956e3ac6765ecb676a441e4ca1bb0e427"
   dependencies:
-    lodash "^4.17.4"
+    lodash "^4.17.10"
     postcss-media-query-parser "^0.2.3"
     postcss-resolve-nested-selector "^0.1.1"
     postcss-selector-parser "^4.0.0"
