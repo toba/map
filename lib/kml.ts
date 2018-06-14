@@ -1,5 +1,5 @@
 import { MapProperties, Index } from './types';
-import { is, maybeNumber, titleCase } from '@toba/tools';
+import { is, maybeNumber, titleCase, MimeType } from '@toba/tools';
 import { log } from '@toba/logger';
 import { xml } from './xml';
 //import * as stream from 'stream';
@@ -7,8 +7,11 @@ import { DOMParser, Options } from 'xmldom';
 import * as JSZip from 'jszip';
 
 const xmlConfig: Options = {
+   locator: {},
    errorHandler: {
-      warning: log.warn,
+      warning: () => {
+         return;
+      },
       error: log.error,
       fatalError: log.error
    }
@@ -103,7 +106,7 @@ function parseDescription(properties: MapProperties): MapProperties {
       let html: Document = null;
 
       try {
-         html = new DOMParser(xmlConfig).parseFromString(source);
+         html = new DOMParser(xmlConfig).parseFromString(source, MimeType.XML);
       } catch (ex) {
          return properties;
       }
@@ -154,13 +157,13 @@ const clean = (text: string) =>
  * Return KML from KMZ file. Returns the first .kml file found in the archive
  * which should be doc.kml.
  */
-async function fromKMZ(data: Buffer) {
+async function fromKMZ(data: Buffer): Promise<Document> {
    const zip = new JSZip();
    const archive = await zip.loadAsync(data);
    for (const name in archive.files) {
       if (name.endsWith('.kml')) {
          const text = await archive.files[name].async('text');
-         return new DOMParser(xmlConfig).parseFromString(text);
+         return new DOMParser(xmlConfig).parseFromString(text, MimeType.XML);
       }
    }
    return null;

@@ -1,7 +1,8 @@
 import { is } from '@toba/tools';
+import { log } from '@toba/logger';
 import { Index, Transformer } from './types';
 import { measure, gpx, kml } from './index';
-import { DOMParser as DOM } from 'xmldom';
+import { DOMParser } from 'xmldom';
 import {
    GeometryObject,
    Feature,
@@ -145,9 +146,9 @@ function featuresFromGPX(gpxString: string): FeatureCollection<any> {
    let gpx = null;
 
    try {
-      gpx = new DOM().parseFromString(gpxString);
-   } catch (ex) {
-      //log.error(ex.toString());
+      gpx = new DOMParser().parseFromString(gpxString);
+   } catch (err) {
+      log.error(err);
       return null;
    }
    const tracks = parseNodes(gpx, 'trk', trackFromGPX);
@@ -192,9 +193,9 @@ const featuresFromKML = (
       kml = kml.replace(/[\r\n]/g, '').replace(/>\s+</g, '><');
 
       try {
-         doc = new DOM().parseFromString(kml);
-      } catch (ex) {
-         //log.error(ex.toString());
+         doc = new DOMParser().parseFromString(kml);
+      } catch (err) {
+         log.error(err);
          return null;
       }
    } else {
