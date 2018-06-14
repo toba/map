@@ -15,6 +15,14 @@
          "type": "shell",
          "group": "build",
          "problemMatcher": ["$tsc"]
+      },
+      {
+         "label": "Publish",
+         "command": "npm",
+         "args": ["publish"],
+         "type": "shell",
+         "group": "none",
+         "problemMatcher": []
       }
    ]
 }
