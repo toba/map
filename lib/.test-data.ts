@@ -1,6 +1,8 @@
-import { MapProperties } from '../types';
+import { MapProperties } from './types';
 import { is, titleCase } from '@toba/tools';
-import { relabel } from '../transform';
+import { relabel } from './transform';
+import * as path from 'path';
+import { readFile as testRead, readFileText as testReadText } from '@toba/test';
 
 const vehicle: { [key: string]: string } = {
    ATV: 'ATV',
@@ -9,6 +11,13 @@ const vehicle: { [key: string]: string } = {
    MOTORCYCLE: 'Motorcycle',
    UTV: 'UTV'
 };
+
+const mockPath = (fileName: string) =>
+   path.join(__dirname, '..', '__mocks__', fileName);
+
+export const readFile = (fileName: string) => testRead(mockPath(fileName));
+export const readFileText = (fileName: string) =>
+   testReadText(mockPath(fileName));
 
 /**
  * Update seasonal restriction field.

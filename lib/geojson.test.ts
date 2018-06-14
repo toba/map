@@ -1,10 +1,11 @@
 import '@toba/test';
 import { geoJSON, kml } from './index';
-import { readFile, readFileText } from './__mocks__/read';
 import {
    mines as transformMines,
-   trails as transformTrails
-} from './__mocks__/transform';
+   trails as transformTrails,
+   readFile,
+   readFileText
+} from './.test-data';
 
 beforeAll(() => {
    console.warn = jest.fn();
