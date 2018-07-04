@@ -2,7 +2,6 @@ import { MapProperties, Index } from './types';
 import { is, maybeNumber, titleCase, MimeType } from '@toba/tools';
 import { log } from '@toba/logger';
 import { xml } from './xml';
-//import * as stream from 'stream';
 import { DOMParser, Options } from 'xmldom';
 import * as JSZip from 'jszip';
 
@@ -19,7 +18,9 @@ const xmlConfig: Options = {
 
 /**
  * Coordinate values for one or more segments. In KML these are
- * space-separated, comma-delimited points. Example:
+ * space-separated, comma-delimited points.
+ *
+ * @example
  *
  *    -113.2924677415256,44.70498119901985,0 -113.2924051073907,44.70509329841001,0 -113.2922923580428,44.70527906358436,0
  */
@@ -143,7 +144,7 @@ function parseDescription(properties: MapProperties): MapProperties {
 }
 
 /**
- * Remove cruft from XML CDATA
+ * Remove cruft from XML CDATA.
  */
 const clean = (text: string) =>
    is.value(text)
