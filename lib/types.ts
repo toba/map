@@ -30,11 +30,17 @@ export interface Location {
    lon: number;
 }
 
+/**
+ * Remote map data to be displayed on the map.
+ */
 export interface MapSource {
    name: string;
+   /** Name to show for attribution. */
    provider: string;
+   /** Type of data file. The default is `KMZ`. */
    type?: MapDataType;
    url: string;
+   /** Method to transform map data. */
    transform?: Transformer;
 }
 

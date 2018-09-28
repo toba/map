@@ -1,7 +1,8 @@
-import { Index, Transformer } from './types';
 import { is } from '@toba/tools';
-import { measure, gpx, kml } from '../index';
-import { DOMParser as DOM } from 'xmldom';
+import { log } from '@toba/logger';
+import { Index, Transformer } from './types';
+import { measure, gpx, kml } from './index';
+import { DOMParser } from 'xmldom';
 import {
    GeometryObject,
    Feature,
@@ -11,7 +12,7 @@ import {
    MultiLineString
 } from 'geojson';
 
-enum Type {
+export enum Type {
    Feature = 'Feature',
    Collection = 'FeatureCollection',
    Point = 'Point',
@@ -145,9 +146,9 @@ function featuresFromGPX(gpxString: string): FeatureCollection<any> {
    let gpx = null;
 
    try {
-      gpx = new DOM().parseFromString(gpxString);
-   } catch (ex) {
-      //log.error(ex.toString());
+      gpx = new DOMParser().parseFromString(gpxString);
+   } catch (err) {
+      log.error(err);
       return null;
    }
    const tracks = parseNodes(gpx, 'trk', trackFromGPX);
@@ -181,8 +182,9 @@ const parseNodes = <T extends GeometryObject>(
  *
  * @param transformer Optional post-processing method
  */
-const featuresFromKML = (transformer: Transformer = null) => (
-   kml: string | Document
+const featuresFromKML = (
+   kml: string | Document,
+   transformer: Transformer = null
 ) => {
    const geo = features();
    let doc: Document = null;
@@ -191,9 +193,9 @@ const featuresFromKML = (transformer: Transformer = null) => (
       kml = kml.replace(/[\r\n]/g, '').replace(/>\s+</g, '><');
 
       try {
-         doc = new DOM().parseFromString(kml);
-      } catch (ex) {
-         //log.error(ex.toString());
+         doc = new DOMParser().parseFromString(kml);
+      } catch (err) {
+         log.error(err);
          return null;
       }
    } else {

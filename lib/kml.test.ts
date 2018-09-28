@@ -1,6 +1,6 @@
 import '@toba/test';
-import { kml } from '../index';
-import { readFile } from './__mocks__/read';
+import { kml } from './index';
+import { readFile } from './.test-data';
 
 beforeAll(() => {
    console.warn = jest.fn();

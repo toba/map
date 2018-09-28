@@ -1,13 +1,26 @@
 import { MapProperties, Index } from './types';
-import { is, maybeNumber, titleCase } from '@toba/tools';
+import { is, maybeNumber, titleCase, MimeType } from '@toba/tools';
+import { log } from '@toba/logger';
 import { xml } from './xml';
-//import * as stream from 'stream';
-import { DOMParser as DOM } from 'xmldom';
+import { DOMParser, Options } from 'xmldom';
 import * as JSZip from 'jszip';
+
+const xmlConfig: Options = {
+   locator: {},
+   errorHandler: {
+      warning: () => {
+         return;
+      },
+      error: log.error,
+      fatalError: log.error
+   }
+};
 
 /**
  * Coordinate values for one or more segments. In KML these are
- * space-separated, comma-delimited points. Example:
+ * space-separated, comma-delimited points.
+ *
+ * @example
  *
  *    -113.2924677415256,44.70498119901985,0 -113.2924051073907,44.70509329841001,0 -113.2922923580428,44.70527906358436,0
  */
@@ -94,7 +107,7 @@ function parseDescription(properties: MapProperties): MapProperties {
       let html: Document = null;
 
       try {
-         html = new DOM().parseFromString(source);
+         html = new DOMParser(xmlConfig).parseFromString(source, MimeType.XML);
       } catch (ex) {
          return properties;
       }
@@ -131,7 +144,7 @@ function parseDescription(properties: MapProperties): MapProperties {
 }
 
 /**
- * Remove cruft from XML CDATA
+ * Remove cruft from XML CDATA.
  */
 const clean = (text: string) =>
    is.value(text)
@@ -145,13 +158,13 @@ const clean = (text: string) =>
  * Return KML from KMZ file. Returns the first .kml file found in the archive
  * which should be doc.kml.
  */
-async function fromKMZ(data: Buffer) {
+async function fromKMZ(data: Buffer): Promise<Document> {
    const zip = new JSZip();
    const archive = await zip.loadAsync(data);
    for (const name in archive.files) {
       if (name.endsWith('.kml')) {
          const text = await archive.files[name].async('text');
-         return new DOM().parseFromString(text);
+         return new DOMParser(xmlConfig).parseFromString(text, MimeType.XML);
       }
    }
    return null;
@@ -180,7 +193,6 @@ function properties(node: Element, extras: string[] = []): MapProperties {
    }
    return parseDescription(properties);
    //delete properties['description'];
-
 }
 
 export const kml = {

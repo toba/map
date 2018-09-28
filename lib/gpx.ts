@@ -1,6 +1,5 @@
-//import config from '../config';
 import { is, merge } from '@toba/tools';
-import { measure } from '../index';
+import { measure } from './index';
 import { Index } from './types';
 import { xml } from './xml';
 
