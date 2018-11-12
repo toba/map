@@ -32,8 +32,8 @@ function seasonal(
    }
 }
 
-export function trails(from: MapProperties): MapProperties {
-   const out: MapProperties = {};
+export function trails(from: MapProperties): Partial<MapProperties> {
+   const out: Partial<MapProperties> = {};
    const miles: number = from['MILES'] as number;
    const who = 'Jurisdiction';
    let name: string = from['NAME'] as string;
@@ -76,7 +76,7 @@ export function trails(from: MapProperties): MapProperties {
 }
 
 export function mines(from: MapProperties): MapProperties {
-   const out: MapProperties = {};
+   const out: Partial<MapProperties> = {};
    // lowercase "name" is the county name
    relabel(from, out, {
       FSAgencyName: 'Forest Service Agency',

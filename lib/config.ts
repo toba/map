@@ -14,7 +14,7 @@ export interface MapConfig {
     */
    maxPossibleSpeed: number;
    /** Erase tracks around given latitude and longitude. */
-   privacyCenter: number[];
+   privacyCenter: number[] | null;
    /** Radius around `privacyCenter` to exclude from GeoJSON */
    privacyMiles: number;
    /** Whether to enforce `privacy` settings */

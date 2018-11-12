@@ -34,7 +34,7 @@ const features = <T extends GeometryObject>(): FeatureCollection<T> => ({
  */
 const geometry = (
    type: Type,
-   coordinates: number[] | number[][] | number[][][]
+   coordinates: number[] | number[][] | number[][][] | null
 ) =>
    ({
       type,
@@ -47,34 +47,36 @@ const geometry = (
 function trackFromGPX(
    node: Element,
    maxPossibleSpeed: number = 0
-): Feature<LineString | MultiLineString> {
+): Feature<LineString | MultiLineString> | null {
    let count = 0;
    let topSpeed = 0;
    let totalTime = 0;
    let totalSpeed = 0;
    let totalDistance = 0;
-   const track = Array.from(node.getElementsByTagName('trkseg'))
+
+   const points = Array.from(node.getElementsByTagName('trkseg'))
       .map(segment => gpx.line(segment, 'trkpt'))
-      .filter(line => line[0].length > 0)
-      .map(line => {
-         totalTime += measure.duration(line);
-         totalDistance += measure.length(line);
+      .filter(line => line !== null && line[0].length > 0) as number[][][];
 
-         return measure.simplify(
-            line.map(point => {
-               const speed = point[Index.Speed];
+   const track = points.map(line => {
+      totalTime += measure.duration(line);
+      totalDistance += measure.length(line);
 
-               if (maxPossibleSpeed === 0 || speed < maxPossibleSpeed) {
-                  count++;
-                  totalSpeed += speed;
-                  if (speed > topSpeed) {
-                     topSpeed = parseFloat(speed.toFixed(1));
-                  }
+      return measure.simplify(
+         line.map(point => {
+            const speed = point[Index.Speed];
+
+            if (maxPossibleSpeed === 0 || speed < maxPossibleSpeed) {
+               count++;
+               totalSpeed += speed;
+               if (speed > topSpeed) {
+                  topSpeed = parseFloat(speed.toFixed(1));
                }
-               return point.slice(0, 3);
-            })
-         );
-      });
+            }
+            return point.slice(0, 3);
+         })
+      );
+   });
 
    return track.length === 0 || track[0].length === 0
       ? null
@@ -105,7 +107,7 @@ const pointFromGPX = (node: Element): Feature<Point> => ({
    geometry: geometry(Type.Point, gpx.location(node)) as Point
 });
 
-function pointFromKML(node: Element): Feature<Point> {
+function pointFromKML(node: Element): Feature<Point> | null {
    const location = kml.location(node);
    return location == null
       ? null
@@ -116,13 +118,15 @@ function pointFromKML(node: Element): Feature<Point> {
         };
 }
 
-function lineFromKML(node: Element): Feature<MultiLineString | LineString> {
+function lineFromKML(
+   node: Element
+): Feature<MultiLineString | LineString> | null {
    const lines = kml.line(node);
-   if (lines != null) {
-      return lines.length > 1
+   return lines != null
+      ? lines.length > 1
          ? lineFeature<MultiLineString>(Type.MultiLine, node, lines)
-         : lineFeature<LineString>(Type.Line, node, lines[0]);
-   }
+         : lineFeature<LineString>(Type.Line, node, lines[0])
+      : null;
 }
 
 const lineFeature = <T extends GeometryObject>(
@@ -141,7 +145,7 @@ const lineFeature = <T extends GeometryObject>(
  * @see http://geojson.org/geojson-spec.html
  * @see https://github.com/mapbox/togeojson
  */
-function featuresFromGPX(gpxString: string): FeatureCollection<any> {
+function featuresFromGPX(gpxString: string): FeatureCollection<any> | null {
    const geo = features();
    let gpx = null;
 
@@ -168,11 +172,11 @@ function featuresFromGPX(gpxString: string): FeatureCollection<any> {
 const parseNodes = <T extends GeometryObject>(
    doc: Document,
    name: string,
-   parser: (el: Element) => Feature<T>
+   parser: (el: Element) => Feature<T> | null
 ): Feature<T>[] =>
    Array.from(doc.getElementsByTagName(name))
       .map(parser)
-      .filter(f => is.value(f));
+      .filter(f => is.value<Feature<T>>(f)) as Feature<T>[];
 
 /**
  * Convert KML to GeoJSON. KML places lines and points in the same `Placemark`
@@ -183,11 +187,11 @@ const parseNodes = <T extends GeometryObject>(
  * @param transformer Optional post-processing method
  */
 const featuresFromKML = (
-   kml: string | Document,
-   transformer: Transformer = null
+   kml: string | Document | null,
+   transformer: Transformer | null = null
 ) => {
    const geo = features();
-   let doc: Document = null;
+   let doc: Document | null = null;
 
    if (is.text(kml)) {
       kml = kml.replace(/[\r\n]/g, '').replace(/>\s+</g, '><');
@@ -202,10 +206,15 @@ const featuresFromKML = (
       doc = kml;
    }
 
-   const lines = parseNodes(doc, 'Placemark', lineFromKML);
-   const points = parseNodes(doc, 'Placemark', pointFromKML);
+   if (doc !== null) {
+      const lines = parseNodes(doc, 'Placemark', lineFromKML);
+      const points = parseNodes(doc, 'Placemark', pointFromKML);
 
-   geo.features = postProcess(geo.features.concat(lines, points), transformer);
+      geo.features = postProcess(
+         geo.features.concat(lines, points),
+         transformer
+      );
+   }
 
    return geo;
 };
@@ -215,9 +224,9 @@ const featuresFromKML = (
  */
 function postProcess(
    features: Feature<any>[],
-   transformer: Transformer = null
+   transformer: Transformer | null = null
 ) {
-   if (transformer != null) {
+   if (transformer !== null) {
       features.map(f => {
          f.properties = transformer(f.properties);
       });

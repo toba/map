@@ -1,3 +1,5 @@
+import { GeoJsonProperties } from 'geojson';
+
 export type TrackFeatures = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
 
 export interface IMappable<T extends GeoJSON.GeometryObject> {
@@ -45,14 +47,16 @@ export interface MapSource {
 }
 
 export interface MapProperties {
-   [key: string]: string | number;
-   description?: string;
+   [key: string]: string | number | undefined;
+   description: string;
 }
 
 /**
  * Method to transform map properties.
  */
-export type Transformer = (from: MapProperties) => MapProperties;
+export type Transformer = (
+   from: MapProperties | GeoJsonProperties | null
+) => MapProperties | null;
 
 /**
  * Mapbox compatible bounds in longitude, latitude order.

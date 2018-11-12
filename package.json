@@ -1,6 +1,6 @@
 {
    "name": "@toba/map",
-   "version": "1.4.0",
+   "version": "2.0.0",
    "description": "Toba map module",
    "private": false,
    "author": {
@@ -11,18 +11,19 @@
    "publishConfig": {
       "access": "public"
    },
-   "main": "dist/index.js",
-   "types:": "dist/index.d.ts",
+   "main": "lib/index.ts",
+   "types:": "js/index.d.ts",
    "files": [
-      "dist/**/*"
+      "lib/**/!(*.test).ts",
+      "js"
    ],
    "scripts": {
       "prepublishOnly": "./node_modules/.bin/tsc",
       "test": "jest --coverage"
    },
    "devDependencies": {
-      "@toba/build": "^1.7.0",
-      "@toba/test": "^1.20.0",
+      "@toba/build": "^1.8.4",
+      "@toba/test": "^2.0.3",
       "@types/jszip": "^3.1.4",
       "@types/node-fetch": "^2.1.1",
       "@types/xmldom": "^0.1.29",
@@ -41,8 +42,8 @@
       "tabWidth": 3
    },
    "dependencies": {
-      "@toba/logger": "^1.1.0",
-      "@toba/tools": "^3.11.0",
+      "@toba/logger": "^2.0.5",
+      "@toba/tools": "^4.0.2",
       "@types/geojson": "^7946.0.2",
       "jszip": "^3.1.5",
       "node-fetch": "^2.1.2",

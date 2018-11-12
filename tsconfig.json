@@ -1,3 +1,6 @@
 {
-   "extends": "./node_modules/@toba/build/ts/config"
+   "extends": "./node_modules/@toba/build/ts/lib-config",
+   "compilerOptions": {
+      "strictNullChecks": true
+   }
 }

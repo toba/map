@@ -1,5 +1,6 @@
-import { Duration } from '@toba/tools';
+import { Duration, is } from '@toba/tools';
 import { Location, Index } from './types';
+import { numberTypeAnnotation } from 'babel-types';
 
 const piDeg = Math.PI / 180.0;
 const radiusMiles = 3958.756;
@@ -51,8 +52,11 @@ function duration(line: number[][]): number {
  *    c = 2 ⋅ atan2(√a, √(1−a))
  *    d = R ⋅ c
  */
-function pointDistance(p1: number[], p2: number[]): number {
-   if (sameLocation(p1, p2)) {
+function pointDistance(
+   p1: number[] | undefined,
+   p2: number[] | undefined
+): number {
+   if (sameLocation(p1, p2) || !is.array(p1) || !is.array(p2)) {
       return 0;
    }
 
@@ -115,7 +119,7 @@ function pointLineDistance(p: number[], p1: number[], p2: number[]): number {
  *
  * @see http://stackoverflow.com/questions/6671183/calculate-the-center-point-of-multiple-latitude-longitude-coordinate-pairs
  */
-function centroid(points: number[][]): Location {
+function centroid(points: number[][]): Location | null {
    const count = points.length;
    if (count == 0) {
       return null;
@@ -155,7 +159,9 @@ function centroid(points: number[][]): Location {
 /**
  * Whether two points are at the same location (disregarding elevation)
  */
-const sameLocation = (p1: number[], p2: number[]) =>
+const sameLocation = (p1: number[] | undefined, p2: number[] | undefined) =>
+   is.array<number>(p1) &&
+   is.array<number>(p2) &&
    p1[Index.Latitude] == p2[Index.Latitude] &&
    p1[Index.Longitude] == p2[Index.Longitude];
 
@@ -203,8 +209,15 @@ function simplify(
          keep[index] = 1; // keep the deviant point
          stack.push(first, index, index, last);
       }
-      last = stack.pop();
-      first = stack.pop();
+      let i = stack.pop();
+
+      if (i !== undefined) {
+         last = i;
+         i = stack.pop();
+         if (i !== undefined) {
+            first = i;
+         }
+      }
    }
    return points.filter((_p, i) => keep[i] == 1);
 }

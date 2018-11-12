@@ -6,7 +6,7 @@ import { xml } from './xml';
 export interface LocationConfig {
    checkPrivacy: boolean;
    privacyCenter?: number[];
-   privacyMiles?: number;
+   privacyMiles: number;
 }
 
 const defaultConfig: LocationConfig = {
@@ -21,7 +21,10 @@ const defaultConfig: LocationConfig = {
  *
  * @see http://nationalatlas.gov/articles/mapping/a_latlong.html
  */
-function location(node: Element, config: LocationConfig = null): number[] {
+function location(
+   node: Element,
+   config: LocationConfig | null = null
+): number[] | null {
    const location = new Array(5);
    const elevation = xml.firstNode(node, 'ele'); // meters
    const t = xml.firstNode(node, 'time'); // UTC
@@ -42,14 +45,20 @@ function location(node: Element, config: LocationConfig = null): number[] {
    }
 
    if (is.value(elevation)) {
-      const m = parseFloat(xml.value(elevation));
-      // convert meters to whole feet
-      location[Index.Elevation] = Math.round(m * 3.28084);
+      const v = xml.value(elevation);
+      if (v !== null) {
+         const m = parseFloat(v);
+         // convert meters to whole feet
+         location[Index.Elevation] = Math.round(m * 3.28084);
+      }
    }
 
    if (is.value(t)) {
-      const d = new Date(xml.value(t));
-      location[Index.Time] = d.getTime();
+      const v = xml.value(t);
+      if (v !== null) {
+         const d = new Date(v);
+         location[Index.Time] = d.getTime();
+      }
    }
    // speed will be calculated later
    location[Index.Speed] = 0;
@@ -78,7 +87,7 @@ function properties(
    for (const key of names) {
       const value = xml.firstValue(node, key);
       if (!is.empty(value)) {
-         properties[key] = value;
+         properties[key] = value!;
       }
    }
    return properties;
@@ -87,15 +96,19 @@ function properties(
 /**
  * Get array of point arrays.
  */
-const line = (node: Element, name: string): number[][] =>
-   Array.from(node.getElementsByTagName(name))
+const line = (node: Element, name: string): number[][] | null => {
+   const points = Array.from(node.getElementsByTagName(name))
       .map(p => location(p))
-      .filter(p => is.value(p))
-      .map((p, i, line) => {
-         if (i > 0) {
-            p[Index.Speed] = measure.speed(p, line[i - 1]);
-         }
-         return p;
-      });
+      .filter(p => is.value(p)) as number[][];
+
+   const speed = points.map((p, i, line) => {
+      if (i > 0) {
+         p![Index.Speed] = measure.speed(p!, line[i - 1]);
+      }
+      return p!;
+   });
+
+   return speed.length > 0 ? speed : null;
+};
 
 export const gpx = { line, properties, location };

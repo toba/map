@@ -32,7 +32,7 @@ export async function load(url: string): Promise<Buffer | void> {
 
 export async function loadSource(
    key: string
-): Promise<FeatureCollection<GeometryObject>> {
+): Promise<FeatureCollection<GeometryObject> | null> {
    const s = config.source[key];
    const data = await load(s.url);
 
@@ -48,4 +48,5 @@ export async function loadSource(
             return geoJSON.featuresFromKML(doc, s.transform);
       }
    }
+   return null;
 }
