@@ -1,6 +1,6 @@
 {
    "name": "@toba/map",
-   "version": "2.0.0",
+   "version": "2.1.0",
    "description": "Toba map module",
    "private": false,
    "author": {
@@ -11,19 +11,21 @@
    "publishConfig": {
       "access": "public"
    },
-   "main": "lib/index.ts",
-   "types:": "js/index.d.ts",
+   "main": "esm/index.js",
+   "types": "esm/index.d.ts",
    "files": [
-      "lib/**/!(*.test).ts",
-      "js"
+      "esm",
+      "cjs"
    ],
    "scripts": {
-      "prepublishOnly": "./node_modules/.bin/tsc",
-      "test": "jest --coverage"
+      "build:esm": "./node_modules/.bin/tsc --project tsconfig.build.json",
+      "build:cjs": "./node_modules/.bin/tsc --project tsconfig.cjs.json",
+      "prepublishOnly": "npm run build:esm & npm run build:cjs",
+      "test": "./node_modules/.bin/jest --coverage"
    },
    "devDependencies": {
-      "@toba/build": "^2.1.0",
-      "@toba/test": "^2.0.3",
+      "@toba/develop": "^6.0.0",
+      "@toba/test": "^4.0.0",
       "@types/jszip": "^3.1.4",
       "@types/node-fetch": "^2.1.1",
       "@types/xmldom": "^0.1.29"

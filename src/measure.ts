@@ -1,6 +1,5 @@
 import { Duration, is } from '@toba/tools';
 import { Location, Index } from './types';
-import { numberTypeAnnotation } from 'babel-types';
 
 const piDeg = Math.PI / 180.0;
 const radiusMiles = 3958.756;

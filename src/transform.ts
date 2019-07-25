@@ -36,7 +36,7 @@ export async function loadSource(
    const s = config.source[key];
    const data = await load(s.url);
 
-   if (is.value(data)) {
+   if (is.value<Buffer>(data)) {
       switch (s.type) {
          case MapDataType.GeoJSON:
          case MapDataType.KML:

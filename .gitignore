@@ -1,4 +1,4 @@
 node_modules/
 coverage/
-js/
-yarn-error.log
+cjs/
+esm/

@@ -1,5 +1,5 @@
-import { MapProperties } from './types';
 import { is, titleCase } from '@toba/tools';
+import { MapProperties } from './types';
 import { relabel } from './transform';
 import * as path from 'path';
 import { readFile as testRead, readFileText as testReadText } from '@toba/test';

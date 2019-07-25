@@ -36,10 +36,10 @@ test('converts KML files to GeoJSON 1', async () => {
    expect(geo).toBeDefined();
    expect(geo).toHaveProperty('type', geoJSON.Type.Collection);
    expect(geo).toHaveProperty('features');
-   expect(geo.features).toBeInstanceOf(Array);
-   expect(geo.features).toHaveLength(8843);
-   expect(geo.features[0]).toHaveProperty('properties');
-   expect(geo.features[0].properties).toHaveProperty(
+   expect(geo!.features).toBeInstanceOf(Array);
+   expect(geo!.features).toHaveLength(8843);
+   expect(geo!.features[0]).toHaveProperty('properties');
+   expect(geo!.features[0].properties).toHaveProperty(
       'Land Owner',
       'U.S. Forest Service'
    );
@@ -52,7 +52,7 @@ test('converts KML files to GeoJSON 2', async () => {
 
    expect(geo).toBeDefined();
    expect(geo).toHaveProperty('type', geoJSON.Type.Collection);
-   expect(geo.features).toHaveLength(2444);
-   expect(geo.features[0].properties).toHaveProperty('Label', 'Wonderpup');
-   expect(geo.features[0].geometry).toHaveProperty('type', geoJSON.Type.Line);
+   expect(geo!.features).toHaveLength(2444);
+   expect(geo!.features[0].properties).toHaveProperty('Label', 'Wonderpup');
+   expect(geo!.features[0].geometry).toHaveProperty('type', geoJSON.Type.Line);
 });
