@@ -9,7 +9,7 @@ export interface IMappable<T extends GeoJSON.GeometryObject> {
       | GeoJSON.FeatureCollection<T>;
 }
 
-export enum MapDataType {
+export const enum MapDataType {
    KMZ,
    KML,
    GeoJSON
@@ -19,7 +19,7 @@ export enum MapDataType {
  * Elements of a coordinate array in the order expected by Mapbox and Google
  * Maps.
  */
-export enum Index {
+export const enum Index {
    Longitude,
    Latitude,
    Elevation,
@@ -56,7 +56,7 @@ export interface MapProperties {
  */
 export type Transformer = (
    from: MapProperties | GeoJsonProperties | null
-) => MapProperties | null;
+) => Partial<MapProperties> | null;
 
 /**
  * Mapbox compatible bounds in longitude, latitude order.

@@ -13,13 +13,13 @@ beforeAll(() => {
 
 test('converts GPX files to GeoJSON', async () => {
    const geo = await readFileText('track.gpx').then(geoJSON.featuresFromGPX);
-   expect(geo).toBeDefined();
+   expect(geo).not.toBeNull();
    expect(geo).toHaveProperty('type', geoJSON.Type.Collection);
    expect(geo).toHaveProperty('features');
-   expect(geo.features).toBeInstanceOf(Array);
-   expect(geo.features).toHaveLength(2);
+   expect(geo!.features).toBeInstanceOf(Array);
+   expect(geo!.features).toHaveLength(2);
 
-   const first = geo.features[0];
+   const first = geo!.features[0];
    expect(first).toHaveAllProperties('geometry', 'properties');
    expect(first.geometry).toHaveProperty('type', geoJSON.Type.Line);
    expect(first.geometry).toHaveProperty('coordinates');
@@ -33,7 +33,7 @@ test('converts KML files to GeoJSON 1', async () => {
    const doc = await readFile('mines.kmz').then(kml.fromKMZ);
    const geo = geoJSON.featuresFromKML(doc, transformMines);
 
-   expect(geo).toBeDefined();
+   expect(geo).not.toBeNull();
    expect(geo).toHaveProperty('type', geoJSON.Type.Collection);
    expect(geo).toHaveProperty('features');
    expect(geo!.features).toBeInstanceOf(Array);
@@ -43,7 +43,7 @@ test('converts KML files to GeoJSON 1', async () => {
       'Land Owner',
       'U.S. Forest Service'
    );
-   expect(geo.features[0].geometry).toHaveProperty('type', geoJSON.Type.Point);
+   expect(geo!.features[0].geometry).toHaveProperty('type', geoJSON.Type.Point);
 });
 
 test('converts KML files to GeoJSON 2', async () => {

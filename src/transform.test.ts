@@ -13,7 +13,7 @@ beforeAll(() => {
 
 test('load and transform remote KMZ', async () => {
    const geo = await loadSource('mines');
-   expect(geo).toBeDefined();
-   expect(geo.features).toHaveLength(8843);
-   expect(geo.type).toBe(Type.Collection);
+   expect(geo).not.toBeNull();
+   expect(geo!.features).toHaveLength(8843);
+   expect(geo!.type).toBe(Type.Collection);
 });

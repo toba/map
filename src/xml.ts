@@ -6,7 +6,7 @@ import { is } from '@toba/tools';
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Node.normalize
  */
 function value(node: Element | Node | Document | null): string | null {
-   if (is.value(node) && node.normalize) {
+   if (is.value<Document | Node | Element>(node) && node.normalize) {
       node.normalize();
    }
    return node && node.firstChild && node.firstChild.nodeValue;

@@ -17,8 +17,9 @@ test('returns first node of given type', () => {
 
 test('converts XML attributes to numbers', () => {
    const node = xml.firstNode(doc, 'trkpt');
-   expect(xml.numberAttribute(node, 'lat')).toBe(43.238334);
-   expect(xml.numberAttribute(node, 'lon')).toBe(-116.3666);
+   expect(node).not.toBeNull();
+   expect(xml.numberAttribute(node!, 'lat')).toBe(43.238334);
+   expect(xml.numberAttribute(node!, 'lon')).toBe(-116.3666);
 });
 
 test('returns node content', () => {

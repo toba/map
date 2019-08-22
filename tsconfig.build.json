@@ -1,4 +1,0 @@
-// Configuration used for local TypeScript build.
-{
-   "extends": "@toba/develop/tsconfig.esm"
-}

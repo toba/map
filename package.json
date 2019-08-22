@@ -1,6 +1,6 @@
 {
    "name": "@toba/map",
-   "version": "2.1.0",
+   "version": "2.1.1",
    "description": "Toba map module",
    "private": false,
    "author": {
@@ -11,23 +11,24 @@
    "publishConfig": {
       "access": "public"
    },
-   "main": "esm/index.js",
+   "main": "cjs/index.js",
+   "module": "esm/index.js",
    "types": "esm/index.d.ts",
    "files": [
       "esm",
       "cjs"
    ],
    "scripts": {
-      "build:esm": "./node_modules/.bin/tsc --project tsconfig.build.json",
-      "build:cjs": "./node_modules/.bin/tsc --project tsconfig.cjs.json",
+      "build:esm": "./node_modules/.bin/tsc --project ./node_modules/@toba/develop/tsconfig.esm.json",
+      "build:cjs": "./node_modules/.bin/tsc --project ./node_modules/@toba/develop/tsconfig.cjs-min.json",
       "prepublishOnly": "npm run build:esm & npm run build:cjs",
-      "test": "./node_modules/.bin/jest --coverage"
+      "test": "jest --coverage"
    },
    "devDependencies": {
-      "@toba/develop": "^6.0.0",
-      "@toba/test": "^4.0.0",
-      "@types/jszip": "^3.1.4",
-      "@types/node-fetch": "^2.1.1",
+      "@toba/develop": "^6.6.11",
+      "@toba/test": "^4.1.6",
+      "@types/jszip": "^3.1.6",
+      "@types/node-fetch": "^2.5.0",
       "@types/xmldom": "^0.1.29"
    },
    "repository": {
@@ -42,11 +43,10 @@
       "tabWidth": 3
    },
    "dependencies": {
-      "@toba/logger": "^2.0.5",
-      "@toba/tools": "^4.0.2",
-      "@types/geojson": "^7946.0.2",
-      "jszip": "^3.1.5",
-      "node-fetch": "^2.1.2",
+      "@toba/tools": "^6.0.0",
+      "@types/geojson": "^7946.0.7",
+      "jszip": "^3.2.2",
+      "node-fetch": "^2.6.0",
       "xmldom": "^0.1.27"
    }
 }

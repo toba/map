@@ -25,7 +25,7 @@ export const readFileText = (fileName: string) =>
 function seasonal(
    vehicleKey: string,
    from: MapProperties,
-   out: MapProperties
+   out: Partial<MapProperties>
 ): void {
    if (is.defined(from, vehicleKey)) {
       out[vehicle[vehicleKey] + ' Allowed'] = from[vehicleKey];
@@ -84,5 +84,5 @@ export function mines(from: MapProperties): MapProperties {
       DEPOSIT: 'Name',
       Mining_District: 'Mining District'
    });
-   return out;
+   return out as MapProperties;
 }

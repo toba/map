@@ -1,9 +1,8 @@
 import { MapProperties, Index } from './types';
 import { is, maybeNumber, titleCase, MimeType } from '@toba/tools';
-import { log } from '@toba/logger';
 import { xml } from './xml';
 import { DOMParser, Options } from 'xmldom';
-import * as JSZip from 'jszip';
+import JSZip from 'jszip';
 
 const xmlConfig: Options = {
    locator: {},
@@ -11,8 +10,8 @@ const xmlConfig: Options = {
       warning: () => {
          return;
       },
-      error: log.error,
-      fatalError: log.error
+      error: console.error,
+      fatalError: console.error
    }
 };
 
@@ -152,7 +151,7 @@ function parseDescription(
  * Remove cruft from XML CDATA.
  */
 const clean = (text: string | null) =>
-   is.value(text)
+   is.value<string>(text)
       ? text
            .replace(/[\r\n]/g, '')
            .replace('&lt;Null&gt;', '')
