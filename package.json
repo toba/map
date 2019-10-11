@@ -28,7 +28,7 @@
       "@toba/develop": "^6.6.12",
       "@toba/test": "^4.1.13",
       "@types/jszip": "^3.1.6",
-      "@types/node-fetch": "^2.5.0",
+      "@types/node-fetch": "^2.5.2",
       "@types/xmldom": "^0.1.29"
    },
    "repository": {
