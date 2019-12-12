@@ -5,7 +5,7 @@ import { xml } from './xml';
 
 export interface LocationConfig {
    checkPrivacy: boolean;
-   privacyCenter?: number[];
+   privacyCenter?: [number, number];
    privacyMiles: number;
 }
 

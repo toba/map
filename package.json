@@ -25,10 +25,10 @@
       "test": "jest --coverage"
    },
    "devDependencies": {
-      "@toba/develop": "^6.6.12",
-      "@toba/test": "^4.1.13",
+      "@toba/develop": "^6.7.5",
+      "@toba/test": "^4.1.17",
       "@types/jszip": "^3.1.6",
-      "@types/node-fetch": "^2.5.2",
+      "@types/node-fetch": "^2.5.4",
       "@types/xmldom": "^0.1.29"
    },
    "repository": {
@@ -43,7 +43,7 @@
       "tabWidth": 3
    },
    "dependencies": {
-      "@toba/tools": "^6.7.7",
+      "@toba/tools": "^6.10.1",
       "@types/geojson": "^7946.0.7",
       "jszip": "^3.2.2",
       "node-fetch": "^2.6.0",
