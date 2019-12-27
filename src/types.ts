@@ -28,7 +28,9 @@ export const enum Index {
 }
 
 export interface Location {
+   /** Latitude */
    lat: number;
+   /** Longitude */
    lon: number;
 }
 

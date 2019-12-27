@@ -1,4 +1,7 @@
 import { is } from '@toba/tools';
+import { DOMParser as DOM } from 'xmldom';
+
+const fromText = (text: string) => new DOM().parseFromString(text);
 
 /**
  * Node content.
@@ -29,4 +32,4 @@ const numberAttribute = (dom: Element, name: string) => {
    return num !== null ? parseFloat(num) : 0;
 };
 
-export const xml = { value, firstValue, firstNode, numberAttribute };
+export const xml = { value, firstValue, firstNode, numberAttribute, fromText };

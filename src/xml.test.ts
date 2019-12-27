@@ -1,8 +1,7 @@
 import '@toba/test';
-import { DOMParser as DOM } from 'xmldom';
 import { xml } from './xml';
 
-const doc = new DOM().parseFromString(
+const doc = xml.fromText(
    '<trkpt lat="43.238334" lon="-116.366600">' +
       '<ele>926.90</ele>' +
       '<time>2013-11-02T18:54:59Z</time>' +
