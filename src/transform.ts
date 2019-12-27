@@ -1,8 +1,8 @@
 import { is, Header, HttpStatus } from '@toba/tools';
-import { MapProperties, MapDataType } from './types';
-import { config, kml, geoJSON } from './';
 import fetch from 'node-fetch';
 import { FeatureCollection, GeometryObject } from 'geojson';
+import { MapProperties, MapDataType } from './types';
+import { config, kml, geoJSON } from '.';
 
 /**
  * Copy labeled values to new labels to assist with map property transformation.
@@ -42,9 +42,10 @@ export async function loadSource(
             console.error(`Unsupported map source ${s.type} at ${s.url}`);
             return null;
          case MapDataType.KMZ:
-         default:
+         default: {
             const doc = await kml.fromKMZ(data);
             return geoJSON.featuresFromKML(doc, s.transform);
+         }
       }
    }
    return null;

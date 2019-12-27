@@ -1,19 +1,23 @@
-import { MapProperties, Index } from './types';
-import { is, maybeNumber, titleCase, MimeType } from '@toba/tools';
-import { xml } from './xml';
-import { DOMParser, Options } from 'xmldom';
 import JSZip from 'jszip';
+import { is, maybeNumber, titleCase, MimeType } from '@toba/tools';
+import { DOMParser, Options } from 'xmldom';
+import { MapProperties, Index } from './types';
+import { xml } from './xml';
 
 const xmlConfig: Options = {
    locator: {},
    errorHandler: {
-      warning: () => {
-         return;
-      },
+      warning: () => {},
       error: console.error,
       fatalError: console.error
    }
 };
+
+/**
+ * Curry function to convert string to number rounded to a number of places.
+ */
+const roundFromString = (places: number) => (n: string) =>
+   parseFloat(parseFloat(n).toFixed(places));
 
 /**
  * Coordinate values for one or more segments. In KML these are
@@ -62,12 +66,6 @@ function coordinates(node: Element, name: string): number[][][] | null {
 }
 
 /**
- * Curry function to convert string to number rounded to a number of places.
- */
-const roundFromString = (places: number) => (n: string) =>
-   parseFloat(parseFloat(n).toFixed(places));
-
-/**
  * Return location as `[latitude, longitude, elevation]` or null if the element
  * contains no coordinates.
  */
@@ -76,6 +74,7 @@ function location(node: Element): number[] | null {
    if (locations != null && locations.length > 0) {
       if (locations.length > 1) {
          return locations[0][0];
+         // eslint-disable-next-line
       } else {
          // TODO this seems wrong
          return locations[0][0];
@@ -94,6 +93,17 @@ function line(node: Element): number[][][] | null {
 }
 
 /**
+ * Remove cruft from XML CDATA.
+ */
+const clean = (text: string | null) =>
+   is.value<string>(text)
+      ? text
+           .replace(/[\r\n]/g, '')
+           .replace('&lt;Null&gt;', '')
+           .replace('<Null>', '')
+      : null;
+
+/**
  * Extract properties from description HTML table. This seems to be standard
  * output format from ESRI systems.
  */
@@ -106,7 +116,7 @@ function parseDescription(
    ) {
       // remove CDATA wrapper
       const source = properties
-         .description!.replace(/^<\!\[CDATA\[/, '')
+         .description!.replace(/^<!\[CDATA\[/, '')
          .replace(/\]\]>$/, '');
       let html: Document | null = null;
 
@@ -137,26 +147,16 @@ function parseDescription(
             const key = clean(xml.value(cols[0]));
             const value = maybeNumber(clean(xml.value(cols[1])));
 
-            if (key && value) {
+            if (key !== null && value !== null) {
                properties[key.replace(' ', '_')] = value;
             }
          }
+         // eslint-disable-next-line
          delete properties['description'];
       }
    }
    return properties;
 }
-
-/**
- * Remove cruft from XML CDATA.
- */
-const clean = (text: string | null) =>
-   is.value<string>(text)
-      ? text
-           .replace(/[\r\n]/g, '')
-           .replace('&lt;Null&gt;', '')
-           .replace('<Null>', '')
-      : null;
 
 /**
  * Return KML from KMZ file. Returns the first .kml file found in the archive
@@ -165,8 +165,10 @@ const clean = (text: string | null) =>
 async function fromKMZ(data: Buffer): Promise<Document | null> {
    const zip = new JSZip();
    const archive = await zip.loadAsync(data);
+   // eslint-disable-next-line
    for (const name in archive.files) {
       if (name.endsWith('.kml')) {
+         // eslint-disable-next-line
          const text = await archive.files[name].async('text');
          return new DOMParser(xmlConfig).parseFromString(text, MimeType.XML);
       }
@@ -184,6 +186,7 @@ function properties(
    const names = extras.concat(['name', 'description']);
    const properties: Partial<MapProperties> = {};
 
+   // eslint-disable-next-line
    for (const key of names) {
       let value = xml.firstValue(node, key);
       if (!is.empty(value)) {
@@ -193,6 +196,8 @@ function properties(
                break;
             case 'description':
                value = value!.replace(/[\n\r]/g, ' ').replace(/\s{2,}/g, ' ');
+               break;
+            default:
                break;
          }
          properties[key] = maybeNumber(value)!;

@@ -12,5 +12,5 @@ export {
    MapBounds,
    Transformer,
    TrackFeatures,
-   IMappable
+   Mappable as IMappable
 } from './types';

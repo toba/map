@@ -12,16 +12,16 @@ function value(node: Element | Node | Document | null): string | null {
    return node && node.firstChild && node.firstChild.nodeValue;
 }
 
-function firstValue(node: Element | Document, tag: string): string | null {
-   return value(firstNode(node, tag));
-}
-
 /**
  * First child or null.
  */
 function firstNode(node: Element | Document, tag: string): Element | null {
    const n = node.getElementsByTagName(tag);
    return is.value(n) && n.length > 0 ? n[0] : null;
+}
+
+function firstValue(node: Element | Document, tag: string): string | null {
+   return value(firstNode(node, tag));
 }
 
 const numberAttribute = (dom: Element, name: string) => {

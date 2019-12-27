@@ -14,28 +14,23 @@ export enum Unit {
 }
 
 /**
- * Total distance between all points
+ * Convert degrees to radians
  */
-const length = (points: number[][]) =>
-   points.reduce(
-      (total, p, i) => total + (i > 0 ? pointDistance(points[i - 1], p) : 0),
-      0
-   );
+const toRadians = (deg: number) => deg * piDeg;
 
 /**
- * Speed between two points
+ * Convert radians to degrees
  */
-function speed(p1: number[], p2: number[]): number {
-   const t = Math.abs(p1[Index.Time] - p2[Index.Time]); // milliseconds
-   const d = pointDistance(p1, p2);
-   return t > 0 && d > 0 ? d / (t / Duration.Hour) : 0;
-}
+const toDegrees = (rad: number) => (rad * 180) / Math.PI;
 
-function duration(line: number[][]): number {
-   const firstPoint = line[0];
-   const lastPoint = line[line.length - 1];
-   return (lastPoint[Index.Time] - firstPoint[Index.Time]) / Duration.Hour;
-}
+/**
+ * Whether two points are at the same location (disregarding elevation)
+ */
+const sameLocation = (p1: number[] | undefined, p2: number[] | undefined) =>
+   is.array<number>(p1) &&
+   is.array<number>(p2) &&
+   p1[Index.Latitude] == p2[Index.Latitude] &&
+   p1[Index.Longitude] == p2[Index.Longitude];
 
 /**
  * Distance between geographic points accounting for earth curvature
@@ -64,24 +59,36 @@ function pointDistance(
    const latDistance = toRadians(p2[Index.Latitude] - p1[Index.Latitude]);
    const lonDistance = toRadians(p2[Index.Longitude] - p1[Index.Longitude]);
    const a =
-      Math.pow(Math.sin(latDistance / 2), 2) +
-      Math.cos(radLat1) *
-         Math.cos(radLat2) *
-         Math.pow(Math.sin(lonDistance / 2), 2);
+      Math.sin(latDistance / 2) ** 2 +
+      Math.cos(radLat1) * Math.cos(radLat2) * Math.sin(lonDistance / 2) ** 2;
    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
    return earthRadius * c;
 }
 
 /**
- * Convert degrees to radians
+ * Total distance between all points
  */
-const toRadians = (deg: number) => deg * piDeg;
+const length = (points: number[][]) =>
+   points.reduce(
+      (total, p, i) => total + (i > 0 ? pointDistance(points[i - 1], p) : 0),
+      0
+   );
 
 /**
- * Convert radians to degrees
+ * Speed between two points
  */
-const toDegrees = (rad: number) => (rad * 180) / Math.PI;
+function speed(p1: number[], p2: number[]): number {
+   const t = Math.abs(p1[Index.Time] - p2[Index.Time]); // milliseconds
+   const d = pointDistance(p1, p2);
+   return t > 0 && d > 0 ? d / (t / Duration.Hour) : 0;
+}
+
+function duration(line: number[][]): number {
+   const firstPoint = line[0];
+   const lastPoint = line[line.length - 1];
+   return (lastPoint[Index.Time] - firstPoint[Index.Time]) / Duration.Hour;
+}
 
 /**
  * Shortest distance from a point to a segment defined by two points.
@@ -156,21 +163,9 @@ function centroid(points: number[][]): Location | null {
 }
 
 /**
- * Whether two points are at the same location (disregarding elevation)
- */
-const sameLocation = (p1: number[] | undefined, p2: number[] | undefined) =>
-   is.array<number>(p1) &&
-   is.array<number>(p2) &&
-   p1[Index.Latitude] == p2[Index.Latitude] &&
-   p1[Index.Longitude] == p2[Index.Longitude];
-
-/**
  * Simplification using Douglas-Peucker algorithm with recursion elimination
  */
-function simplify(
-   points: number[][],
-   maxPointDeviationFeet: number = 0
-): number[][] {
+function simplify(points: number[][], maxPointDeviationFeet = 0): number[][] {
    if (maxPointDeviationFeet <= 0) {
       return points;
    }
@@ -191,9 +186,10 @@ function simplify(
    let distance = 0;
    let index = 0;
 
-   keep[first] = keep[last] = 1; // keep the end-points
+   keep[first] = 1;
+   keep[last] = 1; // keep the end-points
 
-   while (last) {
+   while (last > 0) {
       maxDistance = 0;
 
       for (let i = first + 1; i < last; i++) {
@@ -227,6 +223,7 @@ export const measure = {
    centroid,
    duration,
    toRadians,
+   toDegrees,
    sameLocation,
    pointDistance,
    simplify

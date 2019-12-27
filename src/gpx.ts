@@ -84,6 +84,7 @@ function properties(
    ]);
    const properties: { [key: string]: string } = {};
 
+   // eslint-disable-next-line
    for (const key of names) {
       const value = xml.firstValue(node, key);
       if (!is.empty(value)) {

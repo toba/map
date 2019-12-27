@@ -1,6 +1,4 @@
 import { is } from '@toba/tools';
-import { Index, Transformer } from './types';
-import { measure, gpx, kml } from './index';
 import { DOMParser } from 'xmldom';
 import {
    GeometryObject,
@@ -10,6 +8,8 @@ import {
    LineString,
    MultiLineString
 } from 'geojson';
+import { Index, Transformer } from './types';
+import { measure, gpx, kml } from './index';
 
 export enum Type {
    Feature = 'Feature',
@@ -45,7 +45,7 @@ const geometry = (
  */
 function trackFromGPX(
    node: Element,
-   maxPossibleSpeed: number = 0
+   maxPossibleSpeed = 0
 ): Feature<LineString | MultiLineString> | null {
    let count = 0;
    let topSpeed = 0;
@@ -82,7 +82,7 @@ function trackFromGPX(
       : {
            type: Type.Feature,
            properties: Object.assign(gpx.properties(node), {
-              topSpeed: topSpeed,
+              topSpeed,
               avgSpeed: parseFloat((totalSpeed / count).toFixed(1)),
               duration: totalTime,
               distance: parseFloat(totalDistance.toFixed(2))
@@ -117,6 +117,16 @@ function pointFromKML(node: Element): Feature<Point> | null {
         };
 }
 
+const lineFeature = <T extends GeometryObject>(
+   type: Type,
+   node: Element,
+   lines: number[][] | number[][][]
+): Feature<T> => ({
+   type: Type.Feature,
+   properties: kml.properties(node),
+   geometry: geometry(type, lines) as T
+});
+
 function lineFromKML(
    node: Element
 ): Feature<MultiLineString | LineString> | null {
@@ -128,15 +138,19 @@ function lineFromKML(
       : null;
 }
 
-const lineFeature = <T extends GeometryObject>(
-   type: Type,
-   node: Element,
-   lines: number[][] | number[][][]
-): Feature<T> => ({
-   type: Type.Feature,
-   properties: kml.properties(node),
-   geometry: geometry(type, lines) as T
-});
+/**
+ * Find nodes with a tag name and parse them into GeoJSON.
+ *
+ * @param name Name of tag to find
+ */
+const parseNodes = <T extends GeometryObject>(
+   doc: Document,
+   name: string,
+   parser: (el: Element) => Feature<T> | null
+): Feature<T>[] =>
+   Array.from(doc.getElementsByTagName(name))
+      .map(parser)
+      .filter(f => is.value<Feature<T>>(f)) as Feature<T>[];
 
 /**
  * Create GeoJSON from GPX string.
@@ -164,18 +178,19 @@ function featuresFromGPX(gpxString: string): FeatureCollection<any> | null {
 }
 
 /**
- * Find nodes with a tag name and parse them into GeoJSON.
- *
- * @param name Name of tag to find
+ * Apply custom transformation to properties.
  */
-const parseNodes = <T extends GeometryObject>(
-   doc: Document,
-   name: string,
-   parser: (el: Element) => Feature<T> | null
-): Feature<T>[] =>
-   Array.from(doc.getElementsByTagName(name))
-      .map(parser)
-      .filter(f => is.value<Feature<T>>(f)) as Feature<T>[];
+function postProcess(
+   features: Feature<any>[],
+   transformer: Transformer | null = null
+) {
+   if (transformer !== null) {
+      features.forEach(f => {
+         f.properties = transformer(f.properties);
+      });
+   }
+   return features;
+}
 
 /**
  * Convert KML to GeoJSON. KML places lines and points in the same `Placemark`
@@ -217,21 +232,6 @@ const featuresFromKML = (
 
    return geo;
 };
-
-/**
- * Apply custom transformation to properties.
- */
-function postProcess(
-   features: Feature<any>[],
-   transformer: Transformer | null = null
-) {
-   if (transformer !== null) {
-      features.map(f => {
-         f.properties = transformer(f.properties);
-      });
-   }
-   return features;
-}
 
 export const geoJSON = {
    Type,

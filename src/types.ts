@@ -2,7 +2,7 @@ import { GeoJsonProperties } from 'geojson';
 
 export type TrackFeatures = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
 
-export interface IMappable<T extends GeoJSON.GeometryObject> {
+export interface Mappable<T extends GeoJSON.GeometryObject> {
    geoJSON():
       | Promise<GeoJSON.Feature<T> | GeoJSON.FeatureCollection<T>>
       | GeoJSON.Feature<T>

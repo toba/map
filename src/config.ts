@@ -1,4 +1,4 @@
-import { MapSource } from './';
+import { MapSource } from './index';
 
 export interface MapConfig {
    minimumTrackLength: number;
