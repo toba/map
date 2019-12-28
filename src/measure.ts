@@ -33,7 +33,7 @@ const sameLocation = (p1: number[] | undefined, p2: number[] | undefined) =>
    p1[Index.Longitude] == p2[Index.Longitude];
 
 /**
- * Distance between geographic points accounting for earth curvature
+ * Distance between geographic points accounting for earth curvature.
  * South latitudes are negative, east longitudes are positive
  *
  * @see http://stackoverflow.com/questions/3694380/calculating-distance-between-two-points-using-latitude-longitude-what-am-i-doi
@@ -46,18 +46,14 @@ const sameLocation = (p1: number[] | undefined, p2: number[] | undefined) =>
  *    c = 2 ⋅ atan2(√a, √(1−a))
  *    d = R ⋅ c
  */
-function pointDistance(
-   p1: number[] | undefined,
-   p2: number[] | undefined
-): number {
-   if (sameLocation(p1, p2) || !is.array(p1) || !is.array(p2)) {
+function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
+   if (lat1 == lat2 && lon1 == lon2) {
       return 0;
    }
-
-   const radLat1 = toRadians(p1[Index.Latitude]);
-   const radLat2 = toRadians(p2[Index.Latitude]);
-   const latDistance = toRadians(p2[Index.Latitude] - p1[Index.Latitude]);
-   const lonDistance = toRadians(p2[Index.Longitude] - p1[Index.Longitude]);
+   const radLat1 = toRadians(lat1);
+   const radLat2 = toRadians(lat2);
+   const latDistance = toRadians(lat2 - lat1);
+   const lonDistance = toRadians(lon2 - lon1);
    const a =
       Math.sin(latDistance / 2) ** 2 +
       Math.cos(radLat1) * Math.cos(radLat2) * Math.sin(lonDistance / 2) ** 2;
@@ -65,6 +61,22 @@ function pointDistance(
 
    return earthRadius * c;
 }
+
+/**
+ * Distance between geographic points accounting for earth curvature.
+ */
+const pointDistance = (
+   p1: number[] | undefined,
+   p2: number[] | undefined
+): number =>
+   sameLocation(p1, p2) || !is.array(p1) || !is.array(p2)
+      ? 0
+      : distance(
+           p1[Index.Latitude],
+           p1[Index.Longitude],
+           p2[Index.Latitude],
+           p2[Index.Longitude]
+        );
 
 /**
  * Total distance between all points
@@ -225,6 +237,7 @@ export const measure = {
    toRadians,
    toDegrees,
    sameLocation,
+   distance,
    pointDistance,
    simplify
 };

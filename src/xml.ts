@@ -35,11 +35,6 @@ const parseAttribute = <T>(parser: (v: string) => T, fallback?: T) => (
    return v !== null ? parser(v) : ifNull;
 };
 
-const floatAttribute = parseAttribute<number>(v => parseFloat(v));
-const integerAttribute = parseAttribute<number>(v => parseInt(v, 10));
-const booleanAttribute = parseAttribute<boolean>(v => v == 'true', false);
-const textAttribute = parseAttribute<string>(v => v);
-
 export const xml = {
    value,
    firstValue,
@@ -47,9 +42,9 @@ export const xml = {
    fromText,
    /** Convert attribute value to type */
    attr: {
-      asFloat: floatAttribute,
-      asBoolean: booleanAttribute,
-      asInteger: integerAttribute,
-      asText: textAttribute
+      asFloat: parseAttribute<number>(v => parseFloat(v)),
+      asBoolean: parseAttribute<boolean>(v => v == 'true', false),
+      asInteger: parseAttribute<number>(v => parseInt(v, 10)),
+      asText: parseAttribute<string>(v => v)
    }
 };
