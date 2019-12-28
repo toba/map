@@ -23,21 +23,20 @@ function firstNode(node: Element | Document, tag: string): Element | null {
    return is.value(n) && n.length > 0 ? n[0] : null;
 }
 
-function firstValue(el: Element | Document, tag: string): string | null {
-   return value(firstNode(el, tag));
-}
+const firstValue = (el: Element | Document, tag: string) =>
+   value(firstNode(el, tag));
 
 const parseAttribute = <T>(parser: (v: string) => T, fallback?: T) => (
    el: Element,
    name: string,
    ifNull: T | undefined = fallback
-) => {
+): T | undefined => {
    const v = el.getAttribute(name);
    return v !== null ? parser(v) : ifNull;
 };
 
-const floatAttribute = parseAttribute<number>(v => parseFloat(v), 0.0);
-const integerAttribute = parseAttribute<number>(v => parseInt(v, 10), 0);
+const floatAttribute = parseAttribute<number>(v => parseFloat(v));
+const integerAttribute = parseAttribute<number>(v => parseInt(v, 10));
 const booleanAttribute = parseAttribute<boolean>(v => v == 'true', false);
 const textAttribute = parseAttribute<string>(v => v);
 
