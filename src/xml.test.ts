@@ -17,11 +17,11 @@ test('returns first node of given type', () => {
 test('converts XML attributes to numbers', () => {
    const node = xml.firstNode(doc, 'trkpt');
    expect(node).not.toBeNull();
-   expect(xml.attr.float(node!, 'lat')).toBe(43.238334);
-   expect(xml.attr.float(node!, 'lon')).toBe(-116.3666);
-   expect(xml.attr.bool(node!, 'visible')).toBe(true);
-   expect(xml.attr.bool(node!, 'fake')).toBe(false);
-   expect(xml.attr.int(node!, 'id')).toBe(45);
+   expect(xml.attr.asFloat(node!, 'lat')).toBe(43.238334);
+   expect(xml.attr.asFloat(node!, 'lon')).toBe(-116.3666);
+   expect(xml.attr.asBoolean(node!, 'visible')).toBe(true);
+   expect(xml.attr.asBoolean(node!, 'fake')).toBe(false);
+   expect(xml.attr.asInteger(node!, 'id')).toBe(45);
 });
 
 test('returns node content', () => {

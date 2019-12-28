@@ -27,17 +27,21 @@ function firstValue(el: Element | Document, tag: string): string | null {
    return value(firstNode(el, tag));
 }
 
-const attrFloat = (el: Element, name: string, ifNull = 0): number => {
+const floatAttribute = (el: Element, name: string, ifNull = 0): number => {
    const v = el.getAttribute(name);
    return v !== null ? parseFloat(v) : ifNull;
 };
 
-const attrInt = (el: Element, name: string, ifNull = 0.0): number => {
+const integerAttribute = (el: Element, name: string, ifNull = 0.0): number => {
    const v = el.getAttribute(name);
    return v !== null ? parseInt(v, 10) : ifNull;
 };
 
-const attrBool = (el: Element, name: string, ifNull = false): boolean => {
+const booleanAttribute = (
+   el: Element,
+   name: string,
+   ifNull = false
+): boolean => {
    const v = el.getAttribute(name);
    return v !== null ? v == 'true' : ifNull;
 };
@@ -49,8 +53,8 @@ export const xml = {
    fromText,
    /** Convert attribute value to type */
    attr: {
-      float: attrFloat,
-      bool: attrBool,
-      int: attrInt
+      asFloat: floatAttribute,
+      asBoolean: booleanAttribute,
+      asInteger: integerAttribute
    }
 };
