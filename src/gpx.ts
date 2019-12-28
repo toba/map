@@ -32,8 +32,8 @@ function location(
    config = config === null ? defaultConfig : merge(config, defaultConfig);
 
    // WGS84 decimal degrees
-   location[Index.Longitude] = xml.numberAttribute(node, 'lon');
-   location[Index.Latitude] = xml.numberAttribute(node, 'lat');
+   location[Index.Longitude] = xml.attr.float(node, 'lon');
+   location[Index.Latitude] = xml.attr.float(node, 'lat');
 
    // exclude points close to home
    if (

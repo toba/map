@@ -23,13 +23,34 @@ function firstNode(node: Element | Document, tag: string): Element | null {
    return is.value(n) && n.length > 0 ? n[0] : null;
 }
 
-function firstValue(node: Element | Document, tag: string): string | null {
-   return value(firstNode(node, tag));
+function firstValue(el: Element | Document, tag: string): string | null {
+   return value(firstNode(el, tag));
 }
 
-const numberAttribute = (dom: Element, name: string) => {
-   const num = dom.getAttribute(name);
-   return num !== null ? parseFloat(num) : 0;
+const attrFloat = (el: Element, name: string, ifNull = 0): number => {
+   const v = el.getAttribute(name);
+   return v !== null ? parseFloat(v) : ifNull;
 };
 
-export const xml = { value, firstValue, firstNode, numberAttribute, fromText };
+const attrInt = (el: Element, name: string, ifNull = 0.0): number => {
+   const v = el.getAttribute(name);
+   return v !== null ? parseInt(v, 10) : ifNull;
+};
+
+const attrBool = (el: Element, name: string, ifNull = false): boolean => {
+   const v = el.getAttribute(name);
+   return v !== null ? v == 'true' : ifNull;
+};
+
+export const xml = {
+   value,
+   firstValue,
+   firstNode,
+   fromText,
+   /** Convert attribute value to type */
+   attr: {
+      float: attrFloat,
+      bool: attrBool,
+      int: attrInt
+   }
+};
