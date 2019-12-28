@@ -27,24 +27,19 @@ function firstValue(el: Element | Document, tag: string): string | null {
    return value(firstNode(el, tag));
 }
 
-const floatAttribute = (el: Element, name: string, ifNull = 0): number => {
-   const v = el.getAttribute(name);
-   return v !== null ? parseFloat(v) : ifNull;
-};
-
-const integerAttribute = (el: Element, name: string, ifNull = 0.0): number => {
-   const v = el.getAttribute(name);
-   return v !== null ? parseInt(v, 10) : ifNull;
-};
-
-const booleanAttribute = (
+const parseAttribute = <T>(parser: (v: string) => T, fallback?: T) => (
    el: Element,
    name: string,
-   ifNull = false
-): boolean => {
+   ifNull: T | undefined = fallback
+) => {
    const v = el.getAttribute(name);
-   return v !== null ? v == 'true' : ifNull;
+   return v !== null ? parser(v) : ifNull;
 };
+
+const floatAttribute = parseAttribute<number>(v => parseFloat(v), 0.0);
+const integerAttribute = parseAttribute<number>(v => parseInt(v, 10), 0);
+const booleanAttribute = parseAttribute<boolean>(v => v == 'true', false);
+const textAttribute = parseAttribute<string>(v => v);
 
 export const xml = {
    value,
@@ -55,6 +50,7 @@ export const xml = {
    attr: {
       asFloat: floatAttribute,
       asBoolean: booleanAttribute,
-      asInteger: integerAttribute
+      asInteger: integerAttribute,
+      asText: textAttribute
    }
 };
