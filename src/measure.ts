@@ -8,7 +8,7 @@ const radiusMiles = 3958.756;
 const earthRadius = radiusMiles;
 //let elevationConversion = feetPerMeter;
 
-export enum Unit {
+export const enum Unit {
    English,
    Metric
 }
