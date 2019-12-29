@@ -63,6 +63,12 @@ function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
 }
 
 /**
+ * Convenience method to call `distance()` with `[latitude, longitude]` tuples.
+ */
+const distanceLatLon = (p1: [number, number], p2: [number, number]) =>
+   distance(p1[0], p1[1], p2[0], p2[1]);
+
+/**
  * Distance between geographic points accounting for earth curvature.
  */
 const pointDistance = (
@@ -238,6 +244,7 @@ export const measure = {
    toDegrees,
    sameLocation,
    distance,
+   distanceLatLon,
    pointDistance,
    simplify
 };

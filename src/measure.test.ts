@@ -35,6 +35,17 @@ test('calculates distance between coordinates', () => {
    );
 });
 
+test('calculates distance between lat/lon tuples', () => {
+   expect(measure.distanceLatLon([-122.0, 48.0], [-122.0, 48.0])).toBe(0);
+   expect(measure.distanceLatLon([48.0, -122.0], [49.0, -121.0])).toBeWithin(
+      82,
+      83
+   );
+   expect(
+      measure.distanceLatLon([33.9425, -118.4081], [20.8987, -156.4305])
+   ).toBeWithin(2482, 2483);
+});
+
 test('identifies points at the same location', () => {
    const p1 = expectGeoPoint([100, 50, 20]);
    const p2 = expectGeoPoint([100, 50, 30]);
