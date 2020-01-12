@@ -17,7 +17,9 @@ export const enum GeoJsonType {
    Point = 'Point',
    MultiPoint = 'MultiPoint',
    Line = 'LineString',
-   MultiLine = 'MultiLineString'
+   MultiLine = 'MultiLineString',
+   Polygon = 'Polygon',
+   MultiPolygon = 'MultiPolygon'
 }
 
 /**
