@@ -1,6 +1,5 @@
 import '@toba/test';
-import { loadSource, config } from './index';
-import { Type } from './geojson';
+import { loadSource, config, GeoJsonType } from './index';
 
 beforeAll(() => {
    config.source['mines'] = {
@@ -15,5 +14,5 @@ test('load and transform remote KMZ', async () => {
    const geo = await loadSource('mines');
    expect(geo).not.toBeNull();
    expect(geo!.features).toHaveLength(8843);
-   expect(geo!.type).toBe(Type.Collection);
+   expect(geo!.type).toBe(GeoJsonType.Collection);
 });

@@ -1,4 +1,4 @@
-export { geoJSON } from './geojson';
+export { GeoJSON, GeoJsonType } from './geojson';
 export { gpx } from './gpx';
 export { kml } from './kml';
 export { xml } from './xml';

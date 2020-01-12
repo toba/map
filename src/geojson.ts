@@ -11,10 +11,11 @@ import {
 import { Index, Transformer } from './types';
 import { measure, gpx, kml } from './index';
 
-export enum Type {
+export const enum GeoJsonType {
    Feature = 'Feature',
    Collection = 'FeatureCollection',
    Point = 'Point',
+   MultiPoint = 'MultiPoint',
    Line = 'LineString',
    MultiLine = 'MultiLineString'
 }
@@ -23,7 +24,7 @@ export enum Type {
  * Empty feature collection.
  */
 const features = <T extends GeometryObject>(): FeatureCollection<T> => ({
-   type: Type.Collection,
+   type: GeoJsonType.Collection,
    features: [] as Feature<T>[]
 });
 
@@ -32,7 +33,7 @@ const features = <T extends GeometryObject>(): FeatureCollection<T> => ({
  * of points (line) or an array of lines.
  */
 const geometry = (
-   type: Type,
+   type: GeoJsonType,
    coordinates: number[] | number[][] | number[][][] | null
 ) =>
    ({
@@ -80,7 +81,7 @@ function trackFromGPX(
    return track.length === 0 || track[0].length === 0
       ? null
       : {
-           type: Type.Feature,
+           type: GeoJsonType.Feature,
            properties: Object.assign(gpx.properties(node), {
               topSpeed,
               avgSpeed: parseFloat((totalSpeed / count).toFixed(1)),
@@ -89,21 +90,21 @@ function trackFromGPX(
            }),
            geometry:
               track.length === 1
-                 ? (geometry(Type.Line, track[0]) as LineString)
-                 : (geometry(Type.MultiLine, track) as MultiLineString)
+                 ? (geometry(GeoJsonType.Line, track[0]) as LineString)
+                 : (geometry(GeoJsonType.MultiLine, track) as MultiLineString)
         };
 }
 
 const routeFromGPX = (node: Element): Feature<LineString> => ({
-   type: Type.Feature,
+   type: GeoJsonType.Feature,
    properties: gpx.properties(node),
-   geometry: geometry(Type.Line, gpx.line(node, 'rtept')) as LineString
+   geometry: geometry(GeoJsonType.Line, gpx.line(node, 'rtept')) as LineString
 });
 
 const pointFromGPX = (node: Element): Feature<Point> => ({
-   type: Type.Feature,
+   type: GeoJsonType.Feature,
    properties: gpx.properties(node, ['sym']),
-   geometry: geometry(Type.Point, gpx.location(node)) as Point
+   geometry: geometry(GeoJsonType.Point, gpx.location(node)) as Point
 });
 
 function pointFromKML(node: Element): Feature<Point> | null {
@@ -111,18 +112,18 @@ function pointFromKML(node: Element): Feature<Point> | null {
    return location == null
       ? null
       : {
-           type: Type.Feature,
+           type: GeoJsonType.Feature,
            properties: kml.properties(node, ['sym']),
-           geometry: geometry(Type.Point, location) as Point
+           geometry: geometry(GeoJsonType.Point, location) as Point
         };
 }
 
 const lineFeature = <T extends GeometryObject>(
-   type: Type,
+   type: GeoJsonType,
    node: Element,
    lines: number[][] | number[][][]
 ): Feature<T> => ({
-   type: Type.Feature,
+   type: GeoJsonType.Feature,
    properties: kml.properties(node),
    geometry: geometry(type, lines) as T
 });
@@ -133,8 +134,8 @@ function lineFromKML(
    const lines = kml.line(node);
    return lines != null
       ? lines.length > 1
-         ? lineFeature<MultiLineString>(Type.MultiLine, node, lines)
-         : lineFeature<LineString>(Type.Line, node, lines[0])
+         ? lineFeature<MultiLineString>(GeoJsonType.MultiLine, node, lines)
+         : lineFeature<LineString>(GeoJsonType.Line, node, lines[0])
       : null;
 }
 
@@ -233,8 +234,7 @@ const featuresFromKML = (
    return geo;
 };
 
-export const geoJSON = {
-   Type,
+export const GeoJSON = {
    features,
    geometry,
    featuresFromGPX,
