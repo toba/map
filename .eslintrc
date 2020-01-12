@@ -1,6 +1,7 @@
 {
    "extends": ["./node_modules/@toba/develop/.eslintrc"],
    "rules": {
-      "no-console": "off"
+      "no-console": "off",
+      "dot-notation": "off"
    }
 }
