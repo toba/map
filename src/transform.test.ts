@@ -14,5 +14,5 @@ test('load and transform remote KMZ', async () => {
    const geo = await loadSource('mines');
    expect(geo).not.toBeNull();
    expect(geo!.features).toHaveLength(8843);
-   expect(geo!.type).toBe(GeoJsonType.Collection);
+   expect(geo!.type).toBe(GeoJsonType.FeatureCollection);
 });

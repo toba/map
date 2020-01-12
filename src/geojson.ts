@@ -13,20 +13,21 @@ import { measure, gpx, kml } from './index';
 
 export const enum GeoJsonType {
    Feature = 'Feature',
-   Collection = 'FeatureCollection',
+   FeatureCollection = 'FeatureCollection',
    Point = 'Point',
    MultiPoint = 'MultiPoint',
    Line = 'LineString',
    MultiLine = 'MultiLineString',
    Polygon = 'Polygon',
-   MultiPolygon = 'MultiPolygon'
+   MultiPolygon = 'MultiPolygon',
+   GeometryCollection = 'GeometryCollection'
 }
 
 /**
  * Empty feature collection.
  */
 const features = <T extends GeometryObject>(): FeatureCollection<T> => ({
-   type: GeoJsonType.Collection,
+   type: GeoJsonType.FeatureCollection,
    features: [] as Feature<T>[]
 });
 

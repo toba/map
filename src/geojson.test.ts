@@ -14,7 +14,7 @@ beforeAll(() => {
 test('converts GPX files to GeoJSON', async () => {
    const geo = await readFileText('track.gpx').then(GeoJSON.featuresFromGPX);
    expect(geo).not.toBeNull();
-   expect(geo).toHaveProperty('type', GeoJsonType.Collection);
+   expect(geo).toHaveProperty('type', GeoJsonType.FeatureCollection);
    expect(geo).toHaveProperty('features');
    expect(geo!.features).toBeInstanceOf(Array);
    expect(geo!.features).toHaveLength(2);
@@ -34,7 +34,7 @@ test('converts KML files to GeoJSON 1', async () => {
    const geo = GeoJSON.featuresFromKML(doc, transformMines);
 
    expect(geo).not.toBeNull();
-   expect(geo).toHaveProperty('type', GeoJsonType.Collection);
+   expect(geo).toHaveProperty('type', GeoJsonType.FeatureCollection);
    expect(geo).toHaveProperty('features');
    expect(geo!.features).toBeInstanceOf(Array);
    expect(geo!.features).toHaveLength(8843);
@@ -51,7 +51,7 @@ test('converts KML files to GeoJSON 2', async () => {
    const geo = GeoJSON.featuresFromKML(doc, transformTrails);
 
    expect(geo).toBeDefined();
-   expect(geo).toHaveProperty('type', GeoJsonType.Collection);
+   expect(geo).toHaveProperty('type', GeoJsonType.FeatureCollection);
    expect(geo!.features).toHaveLength(2444);
    expect(geo!.features[0].properties).toHaveProperty('Label', 'Wonderpup');
    expect(geo!.features[0].geometry).toHaveProperty('type', GeoJsonType.Line);
