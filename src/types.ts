@@ -1,12 +1,12 @@
-import { GeoJsonProperties } from 'geojson';
+import { GeoJsonProperties } from 'geojson'
 
-export type TrackFeatures = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+export type TrackFeatures = GeoJSON.FeatureCollection<GeoJSON.GeometryObject>
 
 export interface Mappable<T extends GeoJSON.GeometryObject> {
    geoJSON():
       | Promise<GeoJSON.Feature<T> | GeoJSON.FeatureCollection<T>>
       | GeoJSON.Feature<T>
-      | GeoJSON.FeatureCollection<T>;
+      | GeoJSON.FeatureCollection<T>
 }
 
 export const enum MapDataType {
@@ -29,28 +29,28 @@ export const enum Index {
 
 export interface Location {
    /** Latitude */
-   lat: number;
+   lat: number
    /** Longitude */
-   lon: number;
+   lon: number
 }
 
 /**
  * Remote map data to be displayed on the map.
  */
 export interface MapSource {
-   name: string;
+   name: string
    /** Name to show for attribution. */
-   provider: string;
+   provider: string
    /** Type of data file. The default is `KMZ`. */
-   type?: MapDataType;
-   url: string;
+   type?: MapDataType
+   url: string
    /** Method to transform map data. */
-   transform?: Transformer;
+   transform?: Transformer
 }
 
 export interface MapProperties {
-   [key: string]: string | number | undefined;
-   description: string;
+   [key: string]: string | number | undefined
+   description: string
 }
 
 /**
@@ -58,7 +58,7 @@ export interface MapProperties {
  */
 export type Transformer = (
    from: MapProperties | GeoJsonProperties | null
-) => Partial<MapProperties> | null;
+) => Partial<MapProperties> | null
 
 /**
  * Mapbox compatible bounds in longitude, latitude order.
@@ -70,10 +70,10 @@ export interface MapBounds {
     * Southwest corner as lon, lat. For the U.S. this is the smallest
     * longitude and latitude values.
     */
-   sw: number[];
+   sw: number[]
    /**
     * Northeast corner as lon, lat. For the U.S. this is the largest
     * longitude and latitude values.
     */
-   ne: number[];
+   ne: number[]
 }

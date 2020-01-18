@@ -1,29 +1,29 @@
-import '@toba/test';
-import { kml } from './index';
-import { readFile } from './.test-data';
+import '@toba/test'
+import { kml } from './index'
+import { readFile } from './.test-data'
 
 beforeAll(() => {
-   console.warn = jest.fn();
-});
+   console.warn = jest.fn()
+})
 
 test('extracts KML from KMZ', () =>
    readFile('motorcycle.kmz')
       .then(kml.fromKMZ)
       .then(doc => {
-         expect(doc).toBeDefined();
-      }));
+         expect(doc).toBeDefined()
+      }))
 
 test('parses HTML property descriptions', () => {
    const properties = {
       name: 'Test Name',
       description: sample
-   };
-   const updated = kml.parseDescription(properties);
+   }
+   const updated = kml.parseDescription(properties)
 
-   expect(updated).toBeDefined();
-   expect(updated).toHaveProperty('DEPOSIT', 'Tanner Manganese Prospect');
-   expect(updated).toHaveProperty('DMSLAT', 443312);
-});
+   expect(updated).toBeDefined()
+   expect(updated).toHaveProperty('DEPOSIT', 'Tanner Manganese Prospect')
+   expect(updated).toHaveProperty('DMSLAT', 443312)
+})
 
 const sample = `<![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 
@@ -233,4 +233,4 @@ const sample = `<![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmln
 
 </html>
 
-]]>`;
+]]>`

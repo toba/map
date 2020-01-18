@@ -25,7 +25,7 @@
       "test": "jest --coverage"
    },
    "devDependencies": {
-      "@toba/develop": "^6.7.14",
+      "@toba/develop": "^6.8.0",
       "@toba/test": "^4.1.17",
       "@types/jszip": "^3.1.7",
       "@types/node-fetch": "^2.5.4",

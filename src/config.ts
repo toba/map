@@ -1,31 +1,31 @@
-import { MapSource } from './index';
+import { MapSource } from './index'
 
 export interface MapConfig {
-   minimumTrackLength: number;
-   minimumTrackPoints: number;
+   minimumTrackLength: number
+   minimumTrackPoints: number
    /**
     * Distance a track point must deviate from others to avoid Douglas-Peucker
     * simplification.
     */
-   maxPointDeviationFeet: number;
+   maxPointDeviationFeet: number
    /**
     * Manually adjusted tracks may have infinite speeds between points so throw
     * out anything over a threshold.
     */
-   maxPossibleSpeed: number;
+   maxPossibleSpeed: number
    /** Erase tracks around given latitude and longitude. */
-   privacyCenter: number[] | null;
+   privacyCenter: number[] | null
    /** Radius around `privacyCenter` to exclude from GeoJSON */
-   privacyMiles: number;
+   privacyMiles: number
    /** Whether to enforce `privacy` settings */
-   checkPrivacy: boolean;
+   checkPrivacy: boolean
    /** Whether track GPX files can be downloaded */
-   allowDownload: boolean;
+   allowDownload: boolean
    /** Maximum number of photo markers to show on Mapbox static map */
-   maxMarkers: number;
+   maxMarkers: number
    /** Link patterns to external maps with `lat`, `lon`, `zoom` and `altitude` tokens */
-   link: { [key: string]: string };
-   source: { [key: string]: MapSource };
+   link: { [key: string]: string }
+   source: { [key: string]: MapSource }
 }
 
 export const config: MapConfig = {
@@ -45,4 +45,4 @@ export const config: MapConfig = {
          'https://www.gaiagps.com/map/?layer=GaiaTopoRasterFeet&lat={lat}&lon={lon}&zoom={zoom}'
    },
    source: {}
-};
+}
