@@ -25,10 +25,10 @@
       "test": "jest --coverage"
    },
    "devDependencies": {
-      "@toba/develop": "^6.8.0",
-      "@toba/test": "^4.1.17",
+      "@toba/develop": "^6.8.1",
+      "@toba/test": "^4.2.1",
       "@types/jszip": "^3.1.7",
-      "@types/node-fetch": "^2.5.4",
+      "@types/node-fetch": "^2.5.5",
       "@types/xmldom": "^0.1.29"
    },
    "repository": {
@@ -39,7 +39,7 @@
       "url": "https://github.com/toba/map/issues"
    },
    "dependencies": {
-      "@toba/tools": "^6.13.3",
+      "@toba/tools": "^6.13.5",
       "@types/geojson": "^7946.0.7",
       "jszip": "^3.2.2",
       "node-fetch": "^2.6.0",
