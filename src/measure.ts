@@ -184,9 +184,7 @@ function centroid(points: number[][]): Location | null {
  * Simplification using Douglas-Peucker algorithm with recursion elimination
  */
 function simplify(points: number[][], maxPointDeviationFeet = 0): number[][] {
-   if (maxPointDeviationFeet <= 0) {
-      return points
-   }
+   if (maxPointDeviationFeet <= 0) return points
 
    const yard = 3
    const mile = yard * 1760

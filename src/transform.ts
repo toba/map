@@ -13,9 +13,7 @@ export function relabel(
    labels: { [key: string]: string }
 ): void {
    Object.keys(labels).forEach(key => {
-      if (is.defined(from, key)) {
-         out[labels[key]] = from[key]
-      }
+      if (is.defined(from, key)) out[labels[key]] = from[key]
    })
 }
 
