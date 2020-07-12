@@ -27,9 +27,9 @@
    "devDependencies": {
       "@toba/develop": "^6.8.2",
       "@toba/test": "^4.2.2",
-      "@types/jszip": "^3.1.7",
-      "@types/node-fetch": "^2.5.5",
-      "@types/xmldom": "^0.1.29"
+      "@types/jszip": "^3.4.1",
+      "@types/node-fetch": "^2.5.7",
+      "@types/xmldom": "^0.1.30"
    },
    "repository": {
       "type": "git",
@@ -41,7 +41,7 @@
    "dependencies": {
       "@toba/tools": "^6.13.5",
       "@types/geojson": "^7946.0.7",
-      "jszip": "^3.2.2",
+      "jszip": "^3.5.0",
       "node-fetch": "^2.6.0",
       "xmldom": "^0.3.0"
    }
