@@ -1,6 +1,6 @@
 {
    "name": "@toba/map",
-   "version": "2.6.3",
+   "version": "2.6.4",
    "description": "Toba map module",
    "private": false,
    "author": {
@@ -25,8 +25,8 @@
       "test": "jest --coverage"
    },
    "devDependencies": {
-      "@toba/develop": "^6.8.2",
-      "@toba/test": "^4.2.2",
+      "@toba/develop": "^6.8.3",
+      "@toba/test": "^4.2.3",
       "@types/jszip": "^3.4.1",
       "@types/node-fetch": "^2.5.7",
       "@types/xmldom": "^0.1.30"
@@ -39,10 +39,10 @@
       "url": "https://github.com/toba/map/issues"
    },
    "dependencies": {
-      "@toba/tools": "^6.13.5",
+      "@toba/tools": "^6.13.7",
       "@types/geojson": "^7946.0.7",
       "jszip": "^3.5.0",
-      "node-fetch": "^2.6.0",
+      "node-fetch": "^2.6.1",
       "xmldom": "^0.3.0"
    }
 }
