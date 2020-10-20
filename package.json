@@ -1,6 +1,6 @@
 {
    "name": "@toba/map",
-   "version": "2.6.4",
+   "version": "2.6.5",
    "description": "Toba map module",
    "private": false,
    "author": {
@@ -19,8 +19,8 @@
       "cjs"
    ],
    "scripts": {
-      "build:esm": "./node_modules/.bin/tsc --project ./node_modules/@toba/develop/tsconfig.esm.json",
-      "build:cjs": "./node_modules/.bin/tsc --project ./node_modules/@toba/develop/tsconfig.cjs-min.json",
+      "build:esm": "tsc --project ./node_modules/@toba/develop/tsconfig.esm.json",
+      "build:cjs": "tsc --project ./node_modules/@toba/develop/tsconfig.cjs-min.json",
       "prepublishOnly": "npm run build:esm & npm run build:cjs",
       "test": "jest --coverage"
    },
